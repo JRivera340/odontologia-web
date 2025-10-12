@@ -4,7 +4,7 @@ import React from 'react';
 import { useCart } from '../context/CartContext';
 import buildWhatsAppUrl from '../lib/buildWhatsAppUrl';
 
-export default function MiniCart({ phone = '+573001234567' }: { phone?: string }) {
+export default function MiniCart({ phone = '+573113440504' }: { phone?: string }) {
   const { items, remove, clear, total, totalMinutes } = useCart();
   
   const handleWhatsApp = () => {

@@ -7,7 +7,7 @@ import buildWhatsAppUrl from '../lib/buildWhatsAppUrl';
 
 export default function CarritoPage() {
   const { items, remove, clear, total, totalMinutes } = useCart();
-  const phone = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '+573001234567';
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '+573113440504';
   
   const handleWhatsApp = () => {
     const url = buildWhatsAppUrl(phone, items.map(i => ({ 

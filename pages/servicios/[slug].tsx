@@ -111,7 +111,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       service: JSON.parse(JSON.stringify(service)),
-      whatsappPhone: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.WHATSAPP_PHONE || '+573001234567',
+      whatsappPhone: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.WHATSAPP_PHONE || '+573113440504',
     },
     revalidate: 3600,
   };
