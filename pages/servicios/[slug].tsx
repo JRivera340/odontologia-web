@@ -5,53 +5,45 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import prisma from '../../lib/prisma';
 import buildWhatsAppUrl from '../../lib/buildWhatsAppUrl';
-<<<<<<< HEAD
-=======
 import { useCart } from '../../context/CartContext';
->>>>>>> feat/HU-03-cart
+import React from 'react';
 
 type Service = {
   id: number;
   title: string;
   slug: string;
-  longDesc?: string;
-  shortDesc: string;
+  longDesc?: string | null;
+  shortDesc?: string | null;
   durationMin: number;
   price: number;
-  imageUrl?: string;
+  imageUrl?: string | null;
 };
 
-type Props = { service: Service; whatsappPhone: string };
+type Props = {
+  service: Service;
+  whatsappPhone: string;
+};
 
 export default function ServicePage({ service, whatsappPhone }: Props) {
-<<<<<<< HEAD
-=======
   const { add } = useCart();
-  
->>>>>>> feat/HU-03-cart
-  const handleWhatsApp = () => {
-    const url = buildWhatsAppUrl(whatsappPhone, [{
-      title: service.title,
-      price: service.price,
-      durationMin: service.durationMin
-    }]);
-    if (typeof window !== 'undefined') window.open(url, '_blank');
-  };
 
-<<<<<<< HEAD
-=======
-  const handleAddToCart = () => {
+  const handleAdd = () =>
     add({
       id: service.id,
       title: service.title,
       slug: service.slug,
       price: service.price,
       durationMin: service.durationMin,
-      imageUrl: service.imageUrl
+      imageUrl: service.imageUrl || undefined,
     });
+
+  const handleWhatsAppSingle = () => {
+    const url = buildWhatsAppUrl(whatsappPhone, [
+      { title: service.title, price: service.price, durationMin: service.durationMin },
+    ]);
+    if (typeof window !== 'undefined') window.open(url, '_blank');
   };
 
->>>>>>> feat/HU-03-cart
   return (
     <>
       <Header />
@@ -66,44 +58,31 @@ export default function ServicePage({ service, whatsappPhone }: Props) {
           </div>
 
           <div>
-<<<<<<< HEAD
             <h1 className="text-2xl font-bold" style={{ color: "var(--brand-brown)" }}>{service.title}</h1>
-=======
-            <h1 className="text-2xl font-bold" style={{ color: "var(--brand-brown)" }}>
-              {service.title}
-            </h1>
->>>>>>> feat/HU-03-cart
             <p className="mt-2 text-gray-700">{service.longDesc || service.shortDesc}</p>
 
             <div className="mt-4 flex items-center gap-6">
               <div><strong>Duración:</strong> {service.durationMin} min</div>
-<<<<<<< HEAD
               <div><strong>Precio:</strong> ${service.price}</div>
             </div>
 
-            <div className="mt-6">
-              <button className="px-4 py-2 rounded" style={{ background: "var(--brand-yellow)" }} onClick={handleWhatsApp}>
-                Contactar por WhatsApp
-              </button>
-=======
-              <div><strong>Precio:</strong> ${service.price.toLocaleString()}</div>
-            </div>
-
             <div className="mt-6 flex gap-3">
-              <button 
-                className="px-4 py-2 rounded font-medium" 
-                style={{ background: "var(--brand-yellow)" }} 
-                onClick={handleWhatsApp}
-              >
-                Contactar por WhatsApp
-              </button>
-              <button 
-                onClick={handleAddToCart}
-                className="px-4 py-2 rounded border border-gray-300 hover:bg-gray-50"
+              <button
+                onClick={handleAdd}
+                className="px-4 py-2 rounded"
+                style={{ background: "var(--brand-yellow)" }}
+                aria-label={`Agregar ${service.title} al carrito`}
               >
                 Agregar al carrito
               </button>
->>>>>>> feat/HU-03-cart
+
+              <button
+                onClick={handleWhatsAppSingle}
+                className="px-4 py-2 rounded border"
+                aria-label={`Contactar por WhatsApp sobre ${service.title}`}
+              >
+                Contactar por WhatsApp
+              </button>
             </div>
           </div>
         </div>
@@ -115,7 +94,7 @@ export default function ServicePage({ service, whatsappPhone }: Props) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const services = await prisma.service.findMany({ select: { slug: true } });
-  const paths = services.map(s => ({ params: { slug: s.slug } }));
+  const paths = services.map((s) => ({ params: { slug: s.slug } }));
   return { paths, fallback: 'blocking' };
 };
 
@@ -132,9 +111,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       service: JSON.parse(JSON.stringify(service)),
-      whatsappPhone: process.env.WHATSAPP_PHONE || '+573001234567'
+      whatsappPhone: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.WHATSAPP_PHONE || '+573001234567',
     },
-    revalidate: 3600
+    revalidate: 3600,
   };
 };
-
