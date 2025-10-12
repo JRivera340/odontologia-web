@@ -5,6 +5,10 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import prisma from '../../lib/prisma';
 import buildWhatsAppUrl from '../../lib/buildWhatsAppUrl';
+<<<<<<< HEAD
+=======
+import { useCart } from '../../context/CartContext';
+>>>>>>> feat/HU-03-cart
 
 type Service = {
   id: number;
@@ -20,6 +24,11 @@ type Service = {
 type Props = { service: Service; whatsappPhone: string };
 
 export default function ServicePage({ service, whatsappPhone }: Props) {
+<<<<<<< HEAD
+=======
+  const { add } = useCart();
+  
+>>>>>>> feat/HU-03-cart
   const handleWhatsApp = () => {
     const url = buildWhatsAppUrl(whatsappPhone, [{
       title: service.title,
@@ -29,6 +38,20 @@ export default function ServicePage({ service, whatsappPhone }: Props) {
     if (typeof window !== 'undefined') window.open(url, '_blank');
   };
 
+<<<<<<< HEAD
+=======
+  const handleAddToCart = () => {
+    add({
+      id: service.id,
+      title: service.title,
+      slug: service.slug,
+      price: service.price,
+      durationMin: service.durationMin,
+      imageUrl: service.imageUrl
+    });
+  };
+
+>>>>>>> feat/HU-03-cart
   return (
     <>
       <Header />
@@ -43,11 +66,18 @@ export default function ServicePage({ service, whatsappPhone }: Props) {
           </div>
 
           <div>
+<<<<<<< HEAD
             <h1 className="text-2xl font-bold" style={{ color: "var(--brand-brown)" }}>{service.title}</h1>
+=======
+            <h1 className="text-2xl font-bold" style={{ color: "var(--brand-brown)" }}>
+              {service.title}
+            </h1>
+>>>>>>> feat/HU-03-cart
             <p className="mt-2 text-gray-700">{service.longDesc || service.shortDesc}</p>
 
             <div className="mt-4 flex items-center gap-6">
               <div><strong>Duración:</strong> {service.durationMin} min</div>
+<<<<<<< HEAD
               <div><strong>Precio:</strong> ${service.price}</div>
             </div>
 
@@ -55,6 +85,25 @@ export default function ServicePage({ service, whatsappPhone }: Props) {
               <button className="px-4 py-2 rounded" style={{ background: "var(--brand-yellow)" }} onClick={handleWhatsApp}>
                 Contactar por WhatsApp
               </button>
+=======
+              <div><strong>Precio:</strong> ${service.price.toLocaleString()}</div>
+            </div>
+
+            <div className="mt-6 flex gap-3">
+              <button 
+                className="px-4 py-2 rounded font-medium" 
+                style={{ background: "var(--brand-yellow)" }} 
+                onClick={handleWhatsApp}
+              >
+                Contactar por WhatsApp
+              </button>
+              <button 
+                onClick={handleAddToCart}
+                className="px-4 py-2 rounded border border-gray-300 hover:bg-gray-50"
+              >
+                Agregar al carrito
+              </button>
+>>>>>>> feat/HU-03-cart
             </div>
           </div>
         </div>
