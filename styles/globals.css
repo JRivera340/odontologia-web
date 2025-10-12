@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* tokens de color según marca */
+:root {
+  --brand-brown: #665434;
+  --brand-yellow: #F7B929;
+}
+
