@@ -1,9 +1,26 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.service.createMany({
-    data: [
+  // Seed admin user
+  const password = await bcrypt.hash('Admin123!', 10);
+  await prisma.adminUser.upsert({
+    where: { email: 'admin@clinica.com' },
+    update: {},
+    create: { 
+      name: 'Admin', 
+      email: 'admin@clinica.com', 
+      password 
+    }
+  });
+  console.log('✅ Admin user created: admin@clinica.com / Admin123!');
+
+  // Seed services
+  const existingServices = await prisma.service.count();
+  if (existingServices === 0) {
+    await prisma.service.createMany({
+      data: [
       {
         title: "Limpieza dental",
         slug: "limpieza-dental",
@@ -23,8 +40,11 @@ async function main() {
         imageUrl: "/images/blanqueamiento.jpg"
       }
     ]
-  });
-  console.log('✅ Seed data created successfully');
+    });
+    console.log('✅ Seed data created successfully');
+  } else {
+    console.log('✅ Services already exist, skipping seed');
+  }
 }
 
 main()
