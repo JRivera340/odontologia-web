@@ -1,0 +1,94 @@
+{
+  "merge_process": "STOPPED - Manual conflict resolution required",
+  "timestamp": "2025-10-12T15:03:01",
+  "merged_branches": [
+    {
+      "branch": "feat/HU-01-landing",
+      "status": "already_integrated",
+      "method": "fast-forward",
+      "conflicts": false
+    },
+    {
+      "branch": "feat/HU-02-catalogo",
+      "status": "merged_successfully",
+      "method": "no-ff merge",
+      "conflicts": false,
+      "pushed": true,
+      "commit": "c24cc1f"
+    }
+  ],
+  "pending_branches": [
+    {
+      "branch": "feat/HU-03-cart",
+      "status": "conflicts_detected",
+      "conflicted_files": [
+        "components/ServiceCard.tsx",
+        "pages/servicios/[slug].tsx"
+      ],
+      "conflict_type": "non-trivial source files"
+    },
+    {
+      "branch": "feat/HU-04-admin",
+      "status": "not_processed",
+      "reason": "waiting for HU-03 resolution"
+    }
+  ],
+  "merge_branches_created": [
+    {
+      "branch": "merge/feat-HU-03-cart-into-develop-20251012150301",
+      "purpose": "manual conflict resolution",
+      "remote_url": "origin/merge/feat-HU-03-cart-into-develop-20251012150301",
+      "pr_url": "https://github.com/JRivera340/odontologia-web/pull/new/merge/feat-HU-03-cart-into-develop-20251012150301",
+      "commit": "e0dc87f",
+      "pushed": true,
+      "conflicted_files": [
+        "components/ServiceCard.tsx",
+        "pages/servicios/[slug].tsx"
+      ]
+    }
+  ],
+  "develop_status": {
+    "current_commit": "c24cc1f",
+    "commit_message": "Merge feat/HU-02-catalogo into develop (automatic merge requested)",
+    "remote_synced": true,
+    "clean": true,
+    "repo_url": "https://github.com/JRivera340/odontologia-web"
+  },
+  "conflict_details": {
+    "components/ServiceCard.tsx": {
+      "reason": "Both HU-02 (image optimization) and HU-03 (cart functionality) modified component structure",
+      "resolution_strategy": "Combine both features: keep next/image from HU-02 and add cart hooks from HU-03"
+    },
+    "pages/servicios/[slug].tsx": {
+      "reason": "ADD/ADD conflict - both branches created this file with different content",
+      "resolution_strategy": "Merge SSG from HU-02 with add-to-cart button from HU-03"
+    }
+  },
+  "ci_checks": {
+    "note": "CI checks not run due to conflict resolution pending",
+    "lint_ok": null,
+    "build_ok": null,
+    "dev_ok": null
+  },
+  "action": {
+    "next_steps": [
+      "1. Checkout merge branch: git checkout merge/feat-HU-03-cart-into-develop-20251012150301",
+      "2. Resolve conflicts in components/ServiceCard.tsx",
+      "3. Resolve conflicts in pages/servicios/[slug].tsx",
+      "4. Commit resolved changes",
+      "5. Create PR from merge branch to develop",
+      "6. After merge, continue with feat/HU-04-admin",
+      "7. Run CI checks on final develop branch"
+    ],
+    "status": "MANUAL_INTERVENTION_REQUIRED"
+  },
+  "repository": "https://github.com/JRivera340/odontologia-web",
+  "branches": {
+    "develop": "c24cc1f",
+    "feat/HU-01-landing": "integrated",
+    "feat/HU-02-catalogo": "integrated",
+    "feat/HU-03-cart": "pending - conflicts",
+    "feat/HU-04-admin": "pending - not processed"
+  }
+}
+

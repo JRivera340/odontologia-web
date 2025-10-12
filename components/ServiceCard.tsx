@@ -54,8 +54,8 @@ export default function ServiceCard({ service }: Props) {
         </div>
 
         <div className="flex flex-col items-end gap-2">
-          <Link href={`/servicios/${service.slug}`}>
-            <a className="text-sm underline">Ver más</a>
+          <Link href={`/servicios/${service.slug}`} className="text-sm underline text-blue-600 hover:text-blue-800">
+            Ver más
           </Link>
 
           <button
