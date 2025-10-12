@@ -1,0 +1,60 @@
+{
+  "branch": "feat/HU-02-catalogo",
+  "pr_url": "https://github.com/JRivera340/odontologia-web/compare/develop...feat/HU-02-catalogo?expand=1",
+  "pr_instructions_file": "PR_HU02_INSTRUCTIONS.md",
+  "local_urls": {
+    "landing": "http://localhost:3000",
+    "catalog": "http://localhost:3000/servicios",
+    "detail_example_1": "http://localhost:3000/servicios/limpieza-dental",
+    "detail_example_2": "http://localhost:3000/servicios/blanqueamiento-dental"
+  },
+  "checks": {
+    "build_ok": true,
+    "dev_ok": true,
+    "whatsapp_button_ok": true,
+    "lint_ok": true,
+    "ssg_working": true,
+    "next_image_working": true
+  },
+  "files_created": [
+    "lib/prisma.ts",
+    "lib/buildWhatsAppUrl.ts",
+    "pages/servicios/[slug].tsx",
+    "PR_HU02_INSTRUCTIONS.md",
+    "HU02_REPORT.json"
+  ],
+  "files_modified": [
+    "components/ServiceCard.tsx",
+    "next.config.js"
+  ],
+  "build_stats": {
+    "compile_time": "4.9s",
+    "static_pages_generated": 6,
+    "ssg_routes": [
+      "/servicios/limpieza-dental",
+      "/servicios/blanqueamiento-dental"
+    ],
+    "revalidation_time": "1h",
+    "bundle_size": "105 kB"
+  },
+  "issues_fixed": [
+    "TypeScript error: service parameter implicit any type",
+    "Next.js 13+ Link with <a> child error",
+    "Image optimization with next/image"
+  ],
+  "commit": {
+    "hash": "cd6d393",
+    "message": "ODON-2: add service detail page [SSG] and next/image in ServiceCard",
+    "files_changed": 6,
+    "insertions": 204,
+    "deletions": 7
+  },
+  "status": "✅ COMPLETED SUCCESSFULLY",
+  "next_steps": [
+    "Abrir PR en GitHub usando la URL proporcionada",
+    "Solicitar revisión del código",
+    "Hacer merge a develop después de aprobación",
+    "Continuar con próximas HU (autenticación, panel admin, etc.)"
+  ]
+}
+

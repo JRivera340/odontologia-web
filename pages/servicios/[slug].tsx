@@ -5,27 +5,42 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import prisma from '../../lib/prisma';
 import buildWhatsAppUrl from '../../lib/buildWhatsAppUrl';
+import { useCart } from '../../context/CartContext';
+import React from 'react';
 
 type Service = {
   id: number;
   title: string;
   slug: string;
-  longDesc?: string;
-  shortDesc: string;
+  longDesc?: string | null;
+  shortDesc?: string | null;
   durationMin: number;
   price: number;
-  imageUrl?: string;
+  imageUrl?: string | null;
 };
 
-type Props = { service: Service; whatsappPhone: string };
+type Props = {
+  service: Service;
+  whatsappPhone: string;
+};
 
 export default function ServicePage({ service, whatsappPhone }: Props) {
-  const handleWhatsApp = () => {
-    const url = buildWhatsAppUrl(whatsappPhone, [{
+  const { add } = useCart();
+
+  const handleAdd = () =>
+    add({
+      id: service.id,
       title: service.title,
+      slug: service.slug,
       price: service.price,
-      durationMin: service.durationMin
-    }]);
+      durationMin: service.durationMin,
+      imageUrl: service.imageUrl || undefined,
+    });
+
+  const handleWhatsAppSingle = () => {
+    const url = buildWhatsAppUrl(whatsappPhone, [
+      { title: service.title, price: service.price, durationMin: service.durationMin },
+    ]);
     if (typeof window !== 'undefined') window.open(url, '_blank');
   };
 
@@ -51,8 +66,21 @@ export default function ServicePage({ service, whatsappPhone }: Props) {
               <div><strong>Precio:</strong> ${service.price}</div>
             </div>
 
-            <div className="mt-6">
-              <button className="px-4 py-2 rounded" style={{ background: "var(--brand-yellow)" }} onClick={handleWhatsApp}>
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={handleAdd}
+                className="px-4 py-2 rounded"
+                style={{ background: "var(--brand-yellow)" }}
+                aria-label={`Agregar ${service.title} al carrito`}
+              >
+                Agregar al carrito
+              </button>
+
+              <button
+                onClick={handleWhatsAppSingle}
+                className="px-4 py-2 rounded border"
+                aria-label={`Contactar por WhatsApp sobre ${service.title}`}
+              >
                 Contactar por WhatsApp
               </button>
             </div>
@@ -66,7 +94,7 @@ export default function ServicePage({ service, whatsappPhone }: Props) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const services = await prisma.service.findMany({ select: { slug: true } });
-  const paths = services.map(s => ({ params: { slug: s.slug } }));
+  const paths = services.map((s) => ({ params: { slug: s.slug } }));
   return { paths, fallback: 'blocking' };
 };
 
@@ -83,9 +111,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       service: JSON.parse(JSON.stringify(service)),
-      whatsappPhone: process.env.WHATSAPP_PHONE || '+573001234567'
+      whatsappPhone: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.WHATSAPP_PHONE || '+573001234567',
     },
-    revalidate: 3600
+    revalidate: 3600,
   };
 };
-
