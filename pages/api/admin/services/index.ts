@@ -2,32 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 import { getTokenFromReq } from '../../../../lib/auth';
 
-// --- On-demand revalidation helper (server-side)
-async function triggerRevalidate(paths: string[]) {
-  try {
-    const secret = process.env.REVALIDATE_SECRET;
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const url = `${baseUrl}/api/revalidate`;
-    
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(secret ? { 'x-revalidate-token': secret } : {})
-      },
-      body: JSON.stringify({ paths })
-    });
-    
-    if (!response.ok) {
-      console.error('Revalidate failed:', await response.text());
-    } else {
-      console.log('Revalidated paths:', paths);
-    }
-  } catch (e) {
-    console.error('triggerRevalidate error:', e);
-  }
-}
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const user = getTokenFromReq(req);
   if (!user) return res.status(401).json({ error: 'Unauthorized' });
@@ -59,8 +33,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
     
-    // Trigger revalidation for catalog and detail page
-    await triggerRevalidate(['/servicios', `/servicios/${created.slug}`]);
+    // Trigger on-demand revalidation
+    try {
+      await res.revalidate('/servicios');
+      await res.revalidate(`/servicios/${created.slug}`);
+      console.log('✅ Revalidated:', '/servicios', `/servicios/${created.slug}`);
+    } catch (err) {
+      console.error('❌ Revalidation failed:', err);
+    }
     
     return res.status(201).json(created);
   }
@@ -81,8 +61,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
     
-    // Trigger revalidation for catalog and detail page
-    await triggerRevalidate(['/servicios', `/servicios/${updated.slug}`]);
+    // Trigger on-demand revalidation
+    try {
+      await res.revalidate('/servicios');
+      await res.revalidate(`/servicios/${updated.slug}`);
+      console.log('✅ Revalidated:', '/servicios', `/servicios/${updated.slug}`);
+    } catch (err) {
+      console.error('❌ Revalidation failed:', err);
+    }
     
     return res.status(200).json(updated);
   }
@@ -99,9 +85,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     await prisma.service.delete({ where: { id: Number(id) } });
     
-    // Trigger revalidation for catalog and detail page
+    // Trigger on-demand revalidation
     if (service) {
-      await triggerRevalidate(['/servicios', `/servicios/${service.slug}`]);
+      try {
+        await res.revalidate('/servicios');
+        await res.revalidate(`/servicios/${service.slug}`);
+        console.log('✅ Revalidated after delete:', '/servicios', `/servicios/${service.slug}`);
+      } catch (err) {
+        console.error('❌ Revalidation failed:', err);
+      }
     }
     
     return res.status(204).end();
