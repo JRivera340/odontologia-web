@@ -2,6 +2,32 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 import { getTokenFromReq } from '../../../../lib/auth';
 
+// --- On-demand revalidation helper (server-side)
+async function triggerRevalidate(paths: string[]) {
+  try {
+    const secret = process.env.REVALIDATE_SECRET;
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const url = `${baseUrl}/api/revalidate`;
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(secret ? { 'x-revalidate-token': secret } : {})
+      },
+      body: JSON.stringify({ paths })
+    });
+    
+    if (!response.ok) {
+      console.error('Revalidate failed:', await response.text());
+    } else {
+      console.log('Revalidated paths:', paths);
+    }
+  } catch (e) {
+    console.error('triggerRevalidate error:', e);
+  }
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const user = getTokenFromReq(req);
   if (!user) return res.status(401).json({ error: 'Unauthorized' });
@@ -32,6 +58,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         published: published !== undefined ? published : true
       }
     });
+    
+    // Trigger revalidation for catalog and detail page
+    await triggerRevalidate(['/servicios', `/servicios/${created.slug}`]);
+    
     return res.status(201).json(created);
   }
 
@@ -50,6 +80,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         price: rest.price ? Number(rest.price) : undefined
       }
     });
+    
+    // Trigger revalidation for catalog and detail page
+    await triggerRevalidate(['/servicios', `/servicios/${updated.slug}`]);
+    
     return res.status(200).json(updated);
   }
 
@@ -60,7 +94,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'ID required' });
     }
     
+    // Get service before deleting to access its slug
+    const service = await prisma.service.findUnique({ where: { id: Number(id) } });
+    
     await prisma.service.delete({ where: { id: Number(id) } });
+    
+    // Trigger revalidation for catalog and detail page
+    if (service) {
+      await triggerRevalidate(['/servicios', `/servicios/${service.slug}`]);
+    }
+    
     return res.status(204).end();
   }
 
