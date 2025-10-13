@@ -1,6 +1,8 @@
+import { GetStaticProps } from 'next';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ServiceCard from '../../components/ServiceCard';
+import prisma from '../../lib/prisma';
 
 interface Service {
   id: number;
@@ -31,29 +33,37 @@ export default function ServicesPage({ services }: ServicesPageProps) {
   );
 }
 
-export async function getStaticProps() {
-  // Fallback sample data
-  const services: Service[] = [
-    { 
-      id: 1, 
-      title: 'Limpieza dental', 
-      slug: 'limpieza-dental', 
-      shortDesc: 'Limpieza profesional', 
-      durationMin: 45, 
-      price: 80000, 
-      imageUrl: '/images/limpieza.jpg' 
-    },
-    { 
-      id: 2, 
-      title: 'Blanqueamiento dental', 
-      slug: 'blanqueamiento-dental', 
-      shortDesc: 'Blanqueamiento estético', 
-      durationMin: 60, 
-      price: 200000, 
-      imageUrl: '/images/blanqueamiento.jpg' 
-    }
-  ];
-  
-  return { props: { services } };
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    const services = await prisma.service.findMany({
+      where: { published: true },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        shortDesc: true,
+        durationMin: true,
+        price: true,
+        imageUrl: true,
+      },
+    });
+
+    return {
+      props: {
+        services: JSON.parse(JSON.stringify(services)),
+      },
+      revalidate: 60, // Revalidate every 60 seconds
+    };
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    // Fallback to empty array if database fails
+    return {
+      props: {
+        services: [],
+      },
+      revalidate: 60,
+    };
+  }
 }
 

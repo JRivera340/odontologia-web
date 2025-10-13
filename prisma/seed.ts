@@ -28,7 +28,7 @@ async function main() {
         longDesc: "Limpieza completa con pulido y recomendaciones.",
         durationMin: 45,
         price: 80000,
-        imageUrl: "/images/limpieza.jpg"
+        imageUrl: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=300&fit=crop"
       },
       {
         title: "Blanqueamiento dental",
@@ -37,7 +37,7 @@ async function main() {
         longDesc: "Tratamiento de blanqueamiento profesional en consultorio.",
         durationMin: 60,
         price: 200000,
-        imageUrl: "/images/blanqueamiento.jpg"
+        imageUrl: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=300&fit=crop"
       }
     ]
     });
