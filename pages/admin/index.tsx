@@ -289,48 +289,69 @@ export default function AdminPage() {
                 <div className="col-span-2">
                   <label className="block text-sm font-medium mb-1">Imagen del servicio</label>
                   
-                  {/* Image upload section */}
+                  {/* Image URL input (PRIMARY METHOD) */}
                   <div className="space-y-3">
-                    <div className="flex gap-2">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileSelect}
-                        disabled={uploading}
-                        className="flex-1 px-3 py-2 border rounded text-sm"
-                      />
-                      {uploading && (
-                        <span className="px-3 py-2 text-sm text-gray-600">Subiendo...</span>
-                      )}
+                    <div className="bg-blue-50 border border-blue-200 rounded p-3 text-sm">
+                      <p className="font-medium text-blue-900 mb-1">📌 Usa URLs de imágenes externas</p>
+                      <p className="text-blue-700 text-xs">
+                        Recomendado: <a href="https://unsplash.com" target="_blank" className="underline">Unsplash</a>, 
+                        <a href="https://imgur.com" target="_blank" className="underline ml-1">Imgur</a>, o sube a 
+                        <a href="https://cloudinary.com" target="_blank" className="underline ml-1">Cloudinary</a>
+                      </p>
                     </div>
+
+                    <input
+                      type="text"
+                      value={formData.imageUrl}
+                      onChange={(e) => {
+                        setFormData({...formData, imageUrl: e.target.value});
+                        setUploadPreview(e.target.value || null);
+                      }}
+                      placeholder="https://images.unsplash.com/photo-..."
+                      className="w-full px-3 py-2 border rounded"
+                    />
 
                     {/* Image preview */}
                     {uploadPreview && (
-                      <div className="relative w-32 h-32 border rounded overflow-hidden">
-                        <Image 
-                          src={uploadPreview} 
-                          alt="Preview" 
-                          fill
-                          style={{ objectFit: 'cover' }}
-                        />
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">Vista previa:</p>
+                        <div className="relative w-48 h-32 border rounded overflow-hidden bg-gray-50">
+                          <Image 
+                            src={uploadPreview} 
+                            alt="Preview" 
+                            fill
+                            style={{ objectFit: 'cover' }}
+                            onError={() => {
+                              alert('❌ Error al cargar la imagen. Verifica que la URL sea válida y pública.');
+                              setUploadPreview(null);
+                            }}
+                          />
+                        </div>
                       </div>
                     )}
 
-                    {/* Manual URL input (alternative) */}
+                    {/* File upload (optional, requires Cloudinary) */}
                     <details className="text-sm">
                       <summary className="cursor-pointer text-gray-600 hover:text-gray-800">
-                        O ingresa URL manualmente
+                        ⚠️ Subir archivo (requiere configurar Cloudinary)
                       </summary>
-                      <input
-                        type="text"
-                        value={formData.imageUrl}
-                        onChange={(e) => {
-                          setFormData({...formData, imageUrl: e.target.value});
-                          setUploadPreview(e.target.value || null);
-                        }}
-                        placeholder="https://..."
-                        className="w-full px-3 py-2 border rounded mt-2"
-                      />
+                      <div className="mt-2 space-y-2">
+                        <div className="flex gap-2">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileSelect}
+                            disabled={uploading}
+                            className="flex-1 px-3 py-2 border rounded text-sm"
+                          />
+                          {uploading && (
+                            <span className="px-3 py-2 text-sm text-gray-600">Subiendo...</span>
+                          )}
+                        </div>
+                        <p className="text-xs text-red-600">
+                          ⚠️ Si no has configurado CLOUDINARY_* en .env.local, el upload fallará
+                        </p>
+                      </div>
                     </details>
                   </div>
                 </div>
