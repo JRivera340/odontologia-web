@@ -115,7 +115,8 @@ export default function AdminPage() {
     formData.append('file', file);
 
     try {
-      const res = await fetch('/api/admin/upload', {
+      // Try local upload first (no configuration needed)
+      const res = await fetch('/api/admin/upload-local', {
         method: 'POST',
         body: formData,
       });
@@ -308,27 +309,8 @@ export default function AdminPage() {
                       </div>
                       
                       <p className="text-xs text-green-700 mt-2">
-                        ✅ Formatos: JPG, PNG, GIF, WebP (máx. 3MB)
+                        ✅ Formatos: JPG, PNG, GIF, WebP (máx. 3MB) • Se guarda en tu servidor local
                       </p>
-                      
-                      {/* Warning if not configured */}
-                      <details className="mt-2">
-                        <summary className="text-xs text-gray-600 cursor-pointer hover:text-gray-800">
-                          ⚠️ ¿El upload no funciona? Haz clic aquí
-                        </summary>
-                        <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs">
-                          <p className="font-medium text-yellow-900 mb-1">Necesitas configurar Cloudinary:</p>
-                          <ol className="list-decimal ml-4 text-yellow-800 space-y-1">
-                            <li>Crea cuenta gratis en <a href="https://cloudinary.com" target="_blank" className="underline">cloudinary.com</a></li>
-                            <li>Copia tus credenciales del Dashboard</li>
-                            <li>Añádelas en archivo <code className="bg-yellow-100 px-1">.env.local</code></li>
-                            <li>Reinicia el servidor</li>
-                          </ol>
-                          <p className="mt-2 text-yellow-900">
-                            📄 Ver guía completa: <code className="bg-yellow-100 px-1">SETUP_CLOUDINARY.md</code>
-                          </p>
-                        </div>
-                      </details>
                     </div>
 
                     {/* Image preview */}

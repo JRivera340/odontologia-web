@@ -11,3 +11,7 @@ logs
 *.log
 dist/
 build/
+
+# Uploaded images (local storage)
+public/uploads/*
+!public/uploads/.gitkeep
