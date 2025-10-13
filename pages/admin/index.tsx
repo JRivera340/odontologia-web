@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Image from 'next/image';
 
 const SECRET = process.env.JWT_SECRET || 'dev-secret';
 
@@ -36,6 +37,10 @@ export default function AdminPage() {
     imageUrl: '',
     published: true
   });
+
+  // Image upload states
+  const [uploading, setUploading] = useState(false);
+  const [uploadPreview, setUploadPreview] = useState<string | null>(null);
 
   useEffect(() => {
     loadServices();
@@ -72,6 +77,7 @@ export default function AdminPage() {
       imageUrl: service.imageUrl || '',
       published: service.published
     });
+    setUploadPreview(service.imageUrl || null);
     setShowForm(true);
   };
 
@@ -85,6 +91,48 @@ export default function AdminPage() {
       }
     } catch (err) {
       alert('Error al eliminar');
+    }
+  };
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Por favor selecciona una imagen válida');
+      return;
+    }
+
+    // Validate file size (3MB)
+    if (file.size > 3 * 1024 * 1024) {
+      alert('La imagen debe ser menor a 3MB');
+      return;
+    }
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data?.url) {
+        setUploadPreview(data.url);
+        setFormData(prev => ({ ...prev, imageUrl: data.url }));
+      } else {
+        alert(data.error || 'Error al subir la imagen');
+      }
+    } catch (err) {
+      console.error('Upload error:', err);
+      alert('Error de conexión al subir la imagen');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -116,6 +164,7 @@ export default function AdminPage() {
           imageUrl: '',
           published: true
         });
+        setUploadPreview(null);
         loadServices();
       } else {
         const data = await res.json();
@@ -162,6 +211,7 @@ export default function AdminPage() {
                   imageUrl: '',
                   published: true
                 });
+                setUploadPreview(null);
                 setShowForm(true);
               }}
               className="px-4 py-2 rounded font-medium"
@@ -237,13 +287,52 @@ export default function AdminPage() {
                   />
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium mb-1">URL de imagen</label>
-                  <input
-                    type="text"
-                    value={formData.imageUrl}
-                    onChange={(e) => setFormData({...formData, imageUrl: e.target.value})}
-                    className="w-full px-3 py-2 border rounded"
-                  />
+                  <label className="block text-sm font-medium mb-1">Imagen del servicio</label>
+                  
+                  {/* Image upload section */}
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileSelect}
+                        disabled={uploading}
+                        className="flex-1 px-3 py-2 border rounded text-sm"
+                      />
+                      {uploading && (
+                        <span className="px-3 py-2 text-sm text-gray-600">Subiendo...</span>
+                      )}
+                    </div>
+
+                    {/* Image preview */}
+                    {uploadPreview && (
+                      <div className="relative w-32 h-32 border rounded overflow-hidden">
+                        <Image 
+                          src={uploadPreview} 
+                          alt="Preview" 
+                          fill
+                          style={{ objectFit: 'cover' }}
+                        />
+                      </div>
+                    )}
+
+                    {/* Manual URL input (alternative) */}
+                    <details className="text-sm">
+                      <summary className="cursor-pointer text-gray-600 hover:text-gray-800">
+                        O ingresa URL manualmente
+                      </summary>
+                      <input
+                        type="text"
+                        value={formData.imageUrl}
+                        onChange={(e) => {
+                          setFormData({...formData, imageUrl: e.target.value});
+                          setUploadPreview(e.target.value || null);
+                        }}
+                        placeholder="https://..."
+                        className="w-full px-3 py-2 border rounded mt-2"
+                      />
+                    </details>
+                  </div>
                 </div>
                 <div className="col-span-2">
                   <label className="flex items-center">
@@ -269,6 +358,7 @@ export default function AdminPage() {
                     onClick={() => {
                       setShowForm(false);
                       setEditingService(null);
+                      setUploadPreview(null);
                     }}
                     className="px-4 py-2 rounded border"
                   >
