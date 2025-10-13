@@ -41,6 +41,7 @@ export default function AdminPage() {
   // Image upload states
   const [uploading, setUploading] = useState(false);
   const [uploadPreview, setUploadPreview] = useState<string | null>(null);
+  const [storageType, setStorageType] = useState<'local' | 'cloudinary' | null>(null);
 
   useEffect(() => {
     loadServices();
@@ -126,6 +127,7 @@ export default function AdminPage() {
       if (res.ok && data?.url) {
         setUploadPreview(data.url);
         setFormData(prev => ({ ...prev, imageUrl: data.url }));
+        setStorageType(data.storage || 'local');
       } else {
         alert(data.error || 'Error al subir la imagen');
       }
@@ -309,7 +311,10 @@ export default function AdminPage() {
                       </div>
                       
                       <p className="text-xs text-green-700 mt-2">
-                        ✅ Formatos: JPG, PNG, GIF, WebP (máx. 3MB) • Se guarda en tu servidor local
+                        ✅ Formatos: JPG, PNG, GIF, WebP (máx. 3MB)
+                      </p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        💡 Usa Cloudinary en producción para escalabilidad. Ver: SETUP_CLOUDINARY.md
                       </p>
                     </div>
 
@@ -329,7 +334,18 @@ export default function AdminPage() {
                             }}
                           />
                         </div>
-                        <p className="text-xs text-green-600 mt-1">✅ Imagen lista para guardar</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-xs text-green-600">✅ Imagen lista para guardar</p>
+                          {storageType && (
+                            <span className={`text-xs px-2 py-0.5 rounded ${
+                              storageType === 'cloudinary' 
+                                ? 'bg-blue-100 text-blue-700' 
+                                : 'bg-yellow-100 text-yellow-700'
+                            }`}>
+                              {storageType === 'cloudinary' ? '☁️ Cloud' : '💾 Local'}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     )}
 
