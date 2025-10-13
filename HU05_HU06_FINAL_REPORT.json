@@ -1,0 +1,349 @@
+{
+  "implementation_date": "2025-10-12",
+  "project_name": "Consultorio Odontológico - Web Platform",
+  "repository": "https://github.com/JRivera340/odontologia-web",
+  
+  "branches_created": {
+    "HU-05": {
+      "branch_name": "feat/HU-05-revalidate",
+      "pr_url": "https://github.com/JRivera340/odontologia-web/compare/develop...feat/HU-05-revalidate?expand=1",
+      "commit_hash": "76967b8",
+      "status": "pushed_to_remote",
+      "ready_for_review": true
+    },
+    "HU-06": {
+      "branch_name": "feat/HU-06-image-upload",
+      "pr_url": "https://github.com/JRivera340/odontologia-web/compare/develop...feat/HU-06-image-upload?expand=1",
+      "commit_hash": "c899296",
+      "status": "pushed_to_remote",
+      "ready_for_review": true
+    }
+  },
+
+  "features_implemented": {
+    "HU-05_on_demand_revalidation": {
+      "description": "On-demand ISR (Incremental Static Regeneration) for service pages",
+      "status": "completed",
+      "components": [
+        {
+          "file": "pages/api/revalidate.ts",
+          "type": "new",
+          "description": "Protected API endpoint for triggering page revalidation"
+        },
+        {
+          "file": "pages/api/admin/services/index.ts",
+          "type": "modified",
+          "description": "Integrated triggerRevalidate calls in CREATE, UPDATE, DELETE operations"
+        }
+      ],
+      "features": [
+        "JWT-based or token-based authentication",
+        "Automatic revalidation on service CRUD operations",
+        "Revalidates /servicios and /servicios/[slug] paths",
+        "Fallback to JWT auth if REVALIDATE_SECRET not set",
+        "Detailed logging for debugging"
+      ],
+      "env_vars_required": [
+        "REVALIDATE_SECRET (optional, recommended for production)",
+        "NEXT_PUBLIC_BASE_URL (optional, default: http://localhost:3000)"
+      ]
+    },
+
+    "HU-06_cloudinary_image_upload": {
+      "description": "Direct image upload to Cloudinary from admin panel with real-time preview",
+      "status": "completed",
+      "components": [
+        {
+          "file": "pages/api/admin/upload.ts",
+          "type": "new",
+          "description": "Protected API endpoint for uploading images to Cloudinary"
+        },
+        {
+          "file": "pages/admin/index.tsx",
+          "type": "modified",
+          "description": "Added file input, upload logic, and image preview to service form"
+        },
+        {
+          "file": "next.config.js",
+          "type": "modified",
+          "description": "Added remotePatterns for Cloudinary images (replaced deprecated domains)"
+        },
+        {
+          "file": "package.json",
+          "type": "modified",
+          "description": "Added cloudinary, formidable, @types/formidable dependencies"
+        }
+      ],
+      "features": [
+        "File input with drag-and-drop support",
+        "Real-time image preview before saving",
+        "Automatic upload to Cloudinary on file selection",
+        "File type validation (images only)",
+        "File size validation (max 3MB, configurable)",
+        "Automatic image optimizations (resize, quality, format)",
+        "Alternative manual URL input option",
+        "Next/Image integration for optimal performance"
+      ],
+      "env_vars_required": [
+        "CLOUDINARY_CLOUD_NAME (required)",
+        "CLOUDINARY_API_KEY (required)",
+        "CLOUDINARY_API_SECRET (required)"
+      ],
+      "cloudinary_settings": {
+        "folder": "odontologia/services",
+        "max_file_size": "3MB",
+        "transformations": [
+          "width: 1200, height: 800, crop: limit",
+          "quality: auto:good",
+          "fetch_format: auto (WebP when supported)"
+        ]
+      }
+    }
+  },
+
+  "dependencies_added": [
+    {
+      "name": "cloudinary",
+      "version": "latest",
+      "purpose": "Cloudinary SDK for Node.js - image upload and management"
+    },
+    {
+      "name": "formidable",
+      "version": "latest",
+      "purpose": "Parse multipart/form-data (file uploads) in Node.js"
+    },
+    {
+      "name": "@types/formidable",
+      "version": "latest",
+      "purpose": "TypeScript types for formidable"
+    }
+  ],
+
+  "ci_checks": {
+    "lint": {
+      "status": "passed",
+      "warnings": 0,
+      "errors": 0,
+      "notes": "Fixed img tag warning by using next/image"
+    },
+    "build": {
+      "status": "passed",
+      "build_time": "~6.4s",
+      "bundle_size": "~100 KB (First Load JS)",
+      "routes_generated": 9,
+      "static_pages": 5,
+      "dynamic_pages": 4
+    },
+    "dev_server": {
+      "status": "not_running",
+      "note": "Stopped to prevent file locks during build"
+    }
+  },
+
+  "integration_points": {
+    "revalidate_triggers": [
+      "Admin creates new service → revalidates /servicios and /servicios/[new-slug]",
+      "Admin updates service → revalidates /servicios and /servicios/[slug]",
+      "Admin deletes service → revalidates /servicios and /servicios/[slug]"
+    ],
+    "upload_flow": [
+      "User selects file in admin form",
+      "File validated (type, size)",
+      "File uploaded to Cloudinary via FormData POST",
+      "Cloudinary returns secure_url",
+      "URL set in form imageUrl field",
+      "Preview displayed using next/image",
+      "Form submitted with Cloudinary URL"
+    ]
+  },
+
+  "testing_checklist": {
+    "HU-05": [
+      {
+        "test": "Create service and verify revalidation logs",
+        "status": "pending_user_test",
+        "instructions": "Check server console for 'Revalidated paths: [...]'"
+      },
+      {
+        "test": "Update service and verify public page reflects changes",
+        "status": "pending_user_test"
+      },
+      {
+        "test": "Delete service and verify catalog updates",
+        "status": "pending_user_test"
+      },
+      {
+        "test": "Test /api/revalidate endpoint directly with curl",
+        "status": "pending_user_test",
+        "command": "curl -X POST http://localhost:3000/api/revalidate -H 'Content-Type: application/json' -H 'x-revalidate-token: SECRET' -d '{\"paths\":[\"/servicios\"]}'"
+      }
+    ],
+    "HU-06": [
+      {
+        "test": "Upload image from admin panel",
+        "status": "pending_user_test",
+        "instructions": "Go to /admin → New Service → Upload image → Verify preview"
+      },
+      {
+        "test": "Verify image appears on Cloudinary dashboard",
+        "status": "pending_user_test",
+        "url": "https://cloudinary.com/console/media_library"
+      },
+      {
+        "test": "Verify image loads on public service page",
+        "status": "pending_user_test"
+      },
+      {
+        "test": "Test file size validation (try upload > 3MB)",
+        "status": "pending_user_test",
+        "expected": "Alert: 'La imagen debe ser menor a 3MB'"
+      },
+      {
+        "test": "Test file type validation (try upload non-image)",
+        "status": "pending_user_test",
+        "expected": "Alert: 'Por favor selecciona una imagen válida'"
+      }
+    ]
+  },
+
+  "deployment_requirements": {
+    "environment_variables": [
+      {
+        "name": "REVALIDATE_SECRET",
+        "required": false,
+        "recommended": "production",
+        "example": "your-secret-token-here",
+        "description": "Secret token to protect revalidate endpoint. Falls back to JWT auth if not set."
+      },
+      {
+        "name": "NEXT_PUBLIC_BASE_URL",
+        "required": false,
+        "recommended": "production",
+        "example": "https://your-app.vercel.app",
+        "description": "Base URL for revalidate API calls. Defaults to http://localhost:3000"
+      },
+      {
+        "name": "CLOUDINARY_CLOUD_NAME",
+        "required": true,
+        "example": "your-cloud-name",
+        "description": "Your Cloudinary cloud name (from dashboard)"
+      },
+      {
+        "name": "CLOUDINARY_API_KEY",
+        "required": true,
+        "example": "123456789012345",
+        "description": "Your Cloudinary API key (from dashboard)"
+      },
+      {
+        "name": "CLOUDINARY_API_SECRET",
+        "required": true,
+        "example": "abcdefghijklmnopqrstuvwxyz",
+        "description": "Your Cloudinary API secret (keep secure!)"
+      }
+    ],
+    
+    "vercel_deployment_steps": [
+      "1. Set environment variables in Vercel Dashboard → Settings → Environment Variables",
+      "2. Ensure NEXT_PUBLIC_BASE_URL points to your production domain",
+      "3. Deploy from develop branch or merge PRs and deploy",
+      "4. Test revalidate by creating a service in admin",
+      "5. Test image upload in production admin panel",
+      "6. Monitor Cloudinary usage in their dashboard"
+    ],
+
+    "post_deployment_checks": [
+      "✓ Admin can login",
+      "✓ Admin can upload images",
+      "✓ Images load on public pages",
+      "✓ Creating service triggers revalidation",
+      "✓ Public catalog shows new services immediately",
+      "✓ No console errors related to Cloudinary or revalidate"
+    ]
+  },
+
+  "performance_metrics": {
+    "build_output": {
+      "total_routes": 9,
+      "static_routes": 5,
+      "dynamic_routes": 4,
+      "first_load_js": "~100 KB",
+      "largest_chunk": "framework (59.7 KB)"
+    },
+    "cloudinary_optimization": {
+      "automatic_resize": "1200x800 max",
+      "quality": "auto:good",
+      "format": "auto (WebP preferred)",
+      "cdn": "Global Cloudinary CDN"
+    }
+  },
+
+  "known_limitations": [
+    {
+      "limitation": "Cloudinary Free Tier Limits",
+      "description": "25 GB storage, 25 GB bandwidth/month on free tier",
+      "mitigation": "Upgrade to paid plan or implement alternative storage (AWS S3, Vercel Blob)"
+    },
+    {
+      "limitation": "Revalidate Rate Limits (Vercel)",
+      "description": "~100 revalidations/hour on Hobby plan",
+      "mitigation": "Batch revalidations or upgrade to Pro plan"
+    },
+    {
+      "limitation": "Max File Size 3MB",
+      "description": "Upload endpoint limits files to 3MB",
+      "mitigation": "Increase limit in pages/api/admin/upload.ts if needed"
+    }
+  ],
+
+  "troubleshooting_guide": {
+    "revalidate_not_working": [
+      "1. Check server logs for 'Revalidated paths' or error messages",
+      "2. Verify NEXT_PUBLIC_BASE_URL points to correct domain",
+      "3. Ensure REVALIDATE_SECRET is set in production env vars",
+      "4. Check CDN cache if using external CDN"
+    ],
+    "upload_fails_500": [
+      "1. Verify Cloudinary credentials in env vars",
+      "2. Check server console for specific error",
+      "3. Verify file is valid image format",
+      "4. Check Cloudinary dashboard for quota limits",
+      "5. Ensure api.cloudinary.com is accessible (firewall/proxy)"
+    ],
+    "preview_not_showing": [
+      "1. Verify next.config.js includes Cloudinary in remotePatterns",
+      "2. Restart dev server after config changes",
+      "3. Check browser console for CORS/CSP errors",
+      "4. Verify image URL is accessible"
+    ]
+  },
+
+  "next_steps": [
+    "1. Set up Cloudinary account and get credentials",
+    "2. Add env vars to .env.local for local testing",
+    "3. Test upload functionality locally",
+    "4. Create PRs for review",
+    "5. After merge, set env vars in Vercel/production",
+    "6. Deploy to production and test end-to-end",
+    "7. Monitor Cloudinary usage and performance"
+  ],
+
+  "documentation": {
+    "setup_guide": "SETUP_HU05_HU06.md",
+    "comprehensive_feature_list": "LISTA_COMPLETA_FUNCIONALIDADES.md",
+    "project_status": "PROYECTO_COMPLETO_FUNCIONANDO.md"
+  },
+
+  "summary": {
+    "total_features_implemented": 2,
+    "total_files_created": 3,
+    "total_files_modified": 4,
+    "total_dependencies_added": 3,
+    "build_status": "✅ PASSED",
+    "lint_status": "✅ PASSED",
+    "ready_for_production": "⚠️ REQUIRES ENV VARS",
+    "estimated_implementation_time": "~2 hours",
+    "complexity": "Medium",
+    "testing_required": "Yes - manual testing of upload and revalidate"
+  }
+}
+

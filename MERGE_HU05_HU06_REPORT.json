@@ -1,0 +1,217 @@
+{
+  "merge_date": "2025-10-12T20:30:00-05:00",
+  "branch_target": "develop",
+  "status": "SUCCESS",
+  
+  "merges_completed": [
+    {
+      "feature_branch": "feat/HU-05-revalidate",
+      "commit_hash": "76967b8",
+      "merge_commit": "5df9205",
+      "merge_strategy": "no-ff",
+      "merge_message": "Merge feat/HU-05-revalidate into develop: On-demand ISR revalidation",
+      "files_changed": 2,
+      "insertions": 87,
+      "deletions": 0,
+      "conflicts": "none",
+      "status": "✅ SUCCESS"
+    },
+    {
+      "feature_branch": "feat/HU-06-image-upload",
+      "commit_hash": "c899296",
+      "merge_commit": "10a78a1",
+      "merge_strategy": "no-ff",
+      "merge_message": "Merge feat/HU-06-image-upload into develop: Cloudinary image upload with preview",
+      "files_changed": 6,
+      "insertions": 872,
+      "deletions": 7,
+      "conflicts": "none",
+      "status": "✅ SUCCESS"
+    }
+  ],
+
+  "develop_status": {
+    "current_commit": "10a78a1",
+    "commits_ahead_of_origin": 0,
+    "commits_behind_origin": 0,
+    "pushed_to_remote": true,
+    "remote_url": "https://github.com/JRivera340/odontologia-web.git"
+  },
+
+  "new_features_in_develop": {
+    "HU-05": {
+      "name": "On-Demand ISR Revalidation",
+      "files_added": [
+        "pages/api/revalidate.ts"
+      ],
+      "files_modified": [
+        "pages/api/admin/services/index.ts"
+      ],
+      "endpoints_added": [
+        "/api/revalidate"
+      ],
+      "functionality": [
+        "Automatic page revalidation on service CRUD operations",
+        "JWT or secret token authentication",
+        "Revalidates /servicios and /servicios/[slug] paths",
+        "Server-side triggerRevalidate function"
+      ]
+    },
+    "HU-06": {
+      "name": "Cloudinary Image Upload",
+      "files_added": [
+        "pages/api/admin/upload.ts",
+        "LISTA_COMPLETA_FUNCIONALIDADES.md"
+      ],
+      "files_modified": [
+        "pages/admin/index.tsx",
+        "next.config.js",
+        "package.json",
+        "package-lock.json"
+      ],
+      "endpoints_added": [
+        "/api/admin/upload"
+      ],
+      "dependencies_added": [
+        "cloudinary",
+        "formidable",
+        "@types/formidable"
+      ],
+      "functionality": [
+        "File input in admin service form",
+        "Real-time image preview with next/Image",
+        "File type and size validation",
+        "Direct upload to Cloudinary",
+        "Automatic image optimizations",
+        "Alternative manual URL input",
+        "remotePatterns configured in next.config.js"
+      ]
+    }
+  },
+
+  "build_verification": {
+    "status": "✅ PASSED",
+    "build_time": "~3.2s",
+    "compilation_errors": 0,
+    "typescript_errors": 0,
+    "lint_errors": 0,
+    "total_routes": 10,
+    "new_routes": [
+      "/api/revalidate",
+      "/api/admin/upload"
+    ],
+    "bundle_size": "~100 KB (First Load JS)",
+    "static_pages": 5,
+    "dynamic_pages": 5
+  },
+
+  "validation_guide": {
+    "HU-05_revalidation": {
+      "test_name": "Verify admin changes update public pages",
+      "steps": [
+        "1. Open two browser windows:",
+        "   - Window A: http://localhost:3000/servicios (public)",
+        "   - Window B: http://localhost:3000/admin (admin)",
+        "2. Login to admin: admin@clinica.com / Admin123!",
+        "3. Edit an existing service (change title, price, or description)",
+        "4. Save the service",
+        "5. Check server console for: 'Revalidated paths: [...]'",
+        "6. Refresh Window A (public page)",
+        "7. Verify changes are visible immediately"
+      ],
+      "expected_result": "Public page shows updated data after refresh",
+      "note": "Revalidation is on-demand, not real-time WebSocket"
+    },
+    "HU-06_image_upload": {
+      "test_name": "Verify image upload functionality",
+      "steps": [
+        "1. Go to http://localhost:3000/admin/login",
+        "2. Login: admin@clinica.com / Admin123!",
+        "3. Click '+ Nuevo Servicio' or edit existing service",
+        "4. Look for 'Imagen del servicio' field",
+        "5. Click file input and select an image",
+        "6. Verify preview appears immediately",
+        "7. Save the service",
+        "8. Check public page to see the image"
+      ],
+      "expected_result": "Image preview shows, service saves with Cloudinary URL",
+      "note": "Requires Cloudinary credentials in .env.local",
+      "without_credentials": "File input and preview still work, but upload will fail with error message"
+    }
+  },
+
+  "environment_variables": {
+    "HU-05": {
+      "REVALIDATE_SECRET": {
+        "required": false,
+        "recommended": "production",
+        "description": "Secret token for /api/revalidate endpoint",
+        "fallback": "Uses JWT admin auth if not set"
+      },
+      "NEXT_PUBLIC_BASE_URL": {
+        "required": false,
+        "default": "http://localhost:3000",
+        "description": "Base URL for revalidate API calls"
+      }
+    },
+    "HU-06": {
+      "CLOUDINARY_CLOUD_NAME": {
+        "required": true,
+        "description": "Your Cloudinary cloud name"
+      },
+      "CLOUDINARY_API_KEY": {
+        "required": true,
+        "description": "Your Cloudinary API key"
+      },
+      "CLOUDINARY_API_SECRET": {
+        "required": true,
+        "description": "Your Cloudinary API secret (keep secure!)"
+      }
+    }
+  },
+
+  "git_history": {
+    "branch": "develop",
+    "recent_commits": [
+      "10a78a1 - Merge feat/HU-06-image-upload into develop",
+      "5df9205 - Merge feat/HU-05-revalidate into develop",
+      "c899296 - ODON-6: add Cloudinary upload endpoint",
+      "76967b8 - ODON-5: add revalidate endpoint",
+      "bbf053a - Fix admin login: correct cookie import",
+      "e08eb39 - Update WhatsApp contact to 3113440504"
+    ]
+  },
+
+  "server_status": {
+    "status": "RUNNING",
+    "url": "http://localhost:3000",
+    "port": 3000,
+    "environment": "development",
+    "next_version": "15.5.4"
+  },
+
+  "summary": {
+    "total_features_merged": 2,
+    "total_files_changed": 8,
+    "total_insertions": 959,
+    "total_deletions": 7,
+    "total_new_endpoints": 2,
+    "total_new_dependencies": 3,
+    "merge_conflicts": 0,
+    "build_status": "✅ PASSED",
+    "push_status": "✅ PUSHED",
+    "ready_for_testing": true,
+    "ready_for_production": "⚠️ Requires Cloudinary credentials"
+  },
+
+  "next_steps": [
+    "1. Validate revalidation by editing services in admin",
+    "2. Validate image upload UI (works without Cloudinary)",
+    "3. Configure Cloudinary credentials for full upload testing",
+    "4. Test all CRUD operations",
+    "5. Monitor server console for revalidation logs",
+    "6. Update environment variables in production",
+    "7. Deploy to staging/production"
+  ]
+}
+
