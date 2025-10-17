@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ServiceCard from '../../components/ServiceCard';
@@ -33,7 +33,32 @@ export default function ServicesPage({ services }: ServicesPageProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+// ✅ SOLUCIÓN ROBUSTA PARA PRODUCCIÓN
+// Cambio de SSG (getStaticProps) a SSR (getServerSideProps)
+//
+// ¿Por qué este cambio?
+// 1. SSG + revalidación es complejo y frágil:
+//    - No funciona en desarrollo (npm run dev)
+//    - Requiere configuración especial en producción
+//    - Puede causar inconsistencias (caché desincronizado)
+//
+// 2. SSR (Server-Side Rendering) es simple y robusto:
+//    - ✅ Cambios visibles INMEDIATAMENTE (sin esperar 60 segundos)
+//    - ✅ Funciona igual en desarrollo y producción
+//    - ✅ No requiere revalidación manual
+//    - ✅ Más predecible y fácil de debuggear
+//
+// 3. Rendimiento:
+//    - En desarrollo: idéntico (ambos consultan BD)
+//    - En producción con Vercel/Netlify: cachean automáticamente
+//    - La diferencia de velocidad es imperceptible para usuarios
+//
+// 4. Escalabilidad:
+//    - Vercel/Netlify cachean las respuestas automáticamente en CDN
+//    - Para alto tráfico: agregar caché Redis (futuro)
+//    - Para este proyecto (clínica pequeña): SSR es suficiente
+
+export const getServerSideProps: GetServerSideProps = async () => {
   try {
     const services = await prisma.service.findMany({
       where: { published: true },
@@ -53,17 +78,13 @@ export const getStaticProps: GetStaticProps = async () => {
       props: {
         services: JSON.parse(JSON.stringify(services)),
       },
-      revalidate: 60, // Revalidate every 60 seconds
     };
   } catch (error) {
     console.error('Error fetching services:', error);
-    // Fallback to empty array if database fails
     return {
       props: {
         services: [],
       },
-      revalidate: 60,
     };
   }
-}
-
+};

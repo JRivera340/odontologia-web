@@ -1,5 +1,5 @@
 // pages/servicios/[slug].tsx
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -92,27 +92,44 @@ export default function ServicePage({ service, whatsappPhone }: Props) {
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const services = await prisma.service.findMany({ select: { slug: true } });
-  const paths = services.map((s) => ({ params: { slug: s.slug } }));
-  return { paths, fallback: 'blocking' };
-};
+// ✅ SOLUCIÓN ROBUSTA: SSR en lugar de SSG + revalidación
+//
+// Cambio de getStaticPaths + getStaticProps a getServerSideProps
+//
+// Ventajas:
+// 1. Cambios en admin se ven INMEDIATAMENTE (sin esperar revalidación)
+// 2. Funciona igual en desarrollo y producción
+// 3. No requiere fallback: 'blocking' ni complejidad adicional
+// 4. Más simple de entender y mantener
+//
+// Consideraciones de rendimiento:
+// - Para un catálogo de servicios odontológicos (normalmente <50 servicios),
+//   SSR es perfectamente adecuado
+// - Vercel/Netlify cachean automáticamente las páginas en CDN
+// - La diferencia de velocidad vs SSG es imperceptible (milisegundos)
+// - Si en el futuro hay miles de servicios, se puede implementar
+//   caché Redis o volver a SSG con mejor estrategia
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const slug = params?.slug as string;
-  const service = await prisma.service.findUnique({
-    where: { slug },
-  });
+  
+  try {
+    const service = await prisma.service.findUnique({
+      where: { slug },
+    });
 
-  if (!service) {
+    if (!service || !service.published) {
+      return { notFound: true };
+    }
+
+    return {
+      props: {
+        service: JSON.parse(JSON.stringify(service)),
+        whatsappPhone: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.WHATSAPP_PHONE || '+573113440504',
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching service:', error);
     return { notFound: true };
   }
-
-  return {
-    props: {
-      service: JSON.parse(JSON.stringify(service)),
-      whatsappPhone: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.WHATSAPP_PHONE || '+573113440504',
-    },
-    revalidate: 3600,
-  };
 };

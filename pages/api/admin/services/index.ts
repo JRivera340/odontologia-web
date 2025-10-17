@@ -20,29 +20,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Missing required fields' });
     }
     
-    const created = await prisma.service.create({ 
-      data: {
-        title,
-        slug,
-        shortDesc,
-        longDesc: longDesc || null,
-        durationMin: Number(durationMin),
-        price: Number(price),
-        imageUrl: imageUrl || null,
-        published: published !== undefined ? published : true
-      }
-    });
-    
-    // Trigger on-demand revalidation
     try {
-      await res.revalidate('/servicios');
-      await res.revalidate(`/servicios/${created.slug}`);
-      console.log('✅ Revalidated:', '/servicios', `/servicios/${created.slug}`);
-    } catch (err) {
-      console.error('❌ Revalidation failed:', err);
+      const created = await prisma.service.create({ 
+        data: {
+          title,
+          slug,
+          shortDesc,
+          longDesc: longDesc || null,
+          durationMin: Number(durationMin),
+          price: Number(price),
+          imageUrl: imageUrl || null,
+          published: published !== undefined ? published : true
+        }
+      });
+      
+      console.log('✅ Service created:', created.title);
+      return res.status(201).json(created);
+    } catch (error) {
+      console.error('Error creating service:', error);
+      return res.status(500).json({ error: 'Failed to create service' });
     }
-    
-    return res.status(201).json(created);
   }
 
   if (req.method === 'PUT') {
@@ -52,25 +49,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'ID required' });
     }
     
-    const updated = await prisma.service.update({ 
-      where: { id: Number(id) }, 
-      data: {
-        ...rest,
-        durationMin: rest.durationMin ? Number(rest.durationMin) : undefined,
-        price: rest.price ? Number(rest.price) : undefined
-      }
-    });
-    
-    // Trigger on-demand revalidation
     try {
-      await res.revalidate('/servicios');
-      await res.revalidate(`/servicios/${updated.slug}`);
-      console.log('✅ Revalidated:', '/servicios', `/servicios/${updated.slug}`);
-    } catch (err) {
-      console.error('❌ Revalidation failed:', err);
+      const updated = await prisma.service.update({ 
+        where: { id: Number(id) }, 
+        data: {
+          ...rest,
+          durationMin: rest.durationMin ? Number(rest.durationMin) : undefined,
+          price: rest.price ? Number(rest.price) : undefined
+        }
+      });
+      
+      console.log('✅ Service updated:', updated.title);
+      return res.status(200).json(updated);
+    } catch (error) {
+      console.error('Error updating service:', error);
+      return res.status(500).json({ error: 'Failed to update service' });
     }
-    
-    return res.status(200).json(updated);
   }
 
   if (req.method === 'DELETE') {
@@ -80,26 +74,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'ID required' });
     }
     
-    // Get service before deleting to access its slug
-    const service = await prisma.service.findUnique({ where: { id: Number(id) } });
-    
-    await prisma.service.delete({ where: { id: Number(id) } });
-    
-    // Trigger on-demand revalidation
-    if (service) {
-      try {
-        await res.revalidate('/servicios');
-        await res.revalidate(`/servicios/${service.slug}`);
-        console.log('✅ Revalidated after delete:', '/servicios', `/servicios/${service.slug}`);
-      } catch (err) {
-        console.error('❌ Revalidation failed:', err);
+    try {
+      const service = await prisma.service.findUnique({ where: { id: Number(id) } });
+      
+      if (!service) {
+        return res.status(404).json({ error: 'Service not found' });
       }
+      
+      await prisma.service.delete({ where: { id: Number(id) } });
+      
+      console.log('✅ Service deleted:', service.title);
+      return res.status(204).end();
+    } catch (error) {
+      console.error('Error deleting service:', error);
+      return res.status(500).json({ error: 'Failed to delete service' });
     }
-    
-    return res.status(204).end();
   }
 
   res.setHeader('Allow', 'GET,POST,PUT,DELETE');
   res.status(405).end('Method Not Allowed');
 }
 
+// ✅ NOTA SOBRE REVALIDACIÓN
+// 
+// ¿Por qué eliminé res.revalidate()?
+// - Ahora usamos SSR (getServerSideProps) en lugar de SSG (getStaticProps)
+// - Con SSR, cada request consulta la base de datos directamente
+// - NO se necesita revalidación porque no hay caché estático
+// - Los cambios se ven INMEDIATAMENTE en el sitio público
+//
+// Ventajas de esta arquitectura:
+// 1. ✅ Más simple (menos código, menos complejidad)
+// 2. ✅ Más robusta (funciona en dev y producción sin configuración)
+// 3. ✅ Más predecible (no hay problemas de caché desincronizado)
+// 4. ✅ Suficientemente rápida para un catálogo de servicios odontológicos
+//
+// Si en el futuro necesitas optimización extrema:
+// - Vercel/Netlify cachean automáticamente las respuestas SSR en CDN
+// - Puedes agregar Redis para caché de base de datos
+// - Pero para 90% de proyectos, SSR es la mejor solución
