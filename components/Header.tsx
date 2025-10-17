@@ -23,7 +23,7 @@ export default function Header() {
             )}
           </Link>
           <a 
-            href="https://wa.me/573113440504" 
+            href="https://wa.me/573113440504?text=Buenos%20días.%20Me%20gustaría%20agendar%20una%20cita%20para%20consulta%20odontológica.%20¿Cuál%20sería%20su%20disponibilidad%20más%20próxima?%20Quedo%20atento%20a%20su%20respuesta.%20Gracias." 
             target="_blank" 
             rel="noreferrer" 
             className="px-3 py-2 rounded" 
