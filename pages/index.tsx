@@ -109,7 +109,7 @@ export default function Home() {
             </div>
           </ScrollReveal>
 
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                 <div className="services-grid">
                    {featuredServices.map((service, i) => (
                      <ScrollReveal key={i} delay={i * 150}>
                        <article className="card overflow-hidden group h-full flex flex-col">
@@ -132,11 +132,11 @@ export default function Home() {
                              <span className="text-[var(--brand-yellow)] font-medium text-sm md:text-base">${service.price}</span>
                            </div>
                            <div className="flex gap-3">
-                             <Link href={`/servicios/${service.slug}`} className="btn btn-outline flex-1 text-center text-xs md:text-sm py-2 md:py-3">
+                             <Link href={`/servicios/${service.slug}`} className="btn btn-outline btn-landing flex-1 text-center">
                                Ver detalles
                              </Link>
                              <WhatsAppButton 
-                               className="btn btn-wa flex-1 text-xs md:text-sm py-2 md:py-3"
+                               className="btn btn-wa btn-landing flex-1"
                                message={`Hola, me interesa información sobre ${service.title}.`}
                                label="Consultar"
                              />

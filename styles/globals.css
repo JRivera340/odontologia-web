@@ -854,3 +854,34 @@ body::after {
 .scroll-indicator {
   animation: pulse-glow 2s ease-in-out infinite;
 }
+
+/* Landing page services grid fix */
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Enhanced button proportions for landing page */
+.btn-landing {
+  @apply px-6 py-3 text-sm font-medium rounded-lg transition-all duration-300;
+  min-height: 48px;
+}
+
+.btn-landing:hover {
+  transform: translateY(-2px);
+}
+
+@media (min-width: 768px) {
+  .btn-landing {
+    @apply px-8 py-4 text-base;
+    min-height: 52px;
+  }
+}
