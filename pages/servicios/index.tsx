@@ -3,6 +3,7 @@ import Footer from '../../components/Footer';
 import Topbar from '../../components/Topbar';
 import SectionHeader from '../../components/ui/SectionHeader';
 import ServiceCardPro from '../../components/ServiceCardPro';
+import ServiceCardCompact from '../../components/ServiceCardCompact';
 import ScrollReveal from '../../components/ScrollReveal';
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
@@ -17,18 +18,35 @@ export default function ServicesPage({ services }: { services: any[] }) {
           <ScrollReveal>
             <SectionHeader 
               title="Catálogo de servicios" 
-              subtitle="Conoce nuestros tratamientos especializados y resuelve tus dudas directamente por WhatsApp" 
+              subtitle="Descubre nuestros tratamientos especializados" 
             />
           </ScrollReveal>
           
           {services.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {services.map((s, i) => (
-                <ScrollReveal key={s.id} delay={i * 100}>
-                  <ServiceCardPro service={s} />
-                </ScrollReveal>
-              ))}
-            </div>
+            <>
+              {/* Mobile: Compact Grid (2 columns) */}
+              <div className="grid grid-cols-2 gap-4 md:hidden">
+                {services.map((s) => (
+                  <ServiceCardCompact key={s.id} service={s} />
+                ))}
+              </div>
+              
+              {/* Desktop: Full Cards (3 columns) */}
+              <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {services.map((s, i) => (
+                  <ScrollReveal key={s.id} delay={i * 100}>
+                    <ServiceCardPro service={s} />
+                  </ScrollReveal>
+                ))}
+              </div>
+
+              {/* Scroll Indicator for Mobile */}
+              <div className="md:hidden text-center mt-8 scroll-indicator">
+                <p className="text-xs text-gray-500 uppercase tracking-widest">
+                  {services.length} Servicios Disponibles
+                </p>
+              </div>
+            </>
           ) : (
             <div className="text-center py-20">
               <p className="text-gray-400 text-lg">

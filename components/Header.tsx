@@ -41,8 +41,15 @@ export default function Header(){
       
       {/* Mobile Menu - Fixed full screen */}
       {menuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-xl">
-          <nav className="flex flex-col items-center justify-center h-full gap-6 px-6">
+        <div className="md:hidden fixed inset-0 z-40">
+          {/* Enhanced opaque background with pattern */}
+          <div className="absolute inset-0 bg-black/98 backdrop-blur-2xl"></div>
+          <div className="absolute inset-0 opacity-5" style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(247, 185, 41, 0.3) 1px, transparent 0)`,
+            backgroundSize: '40px 40px'
+          }}></div>
+          
+          <nav className="relative flex flex-col items-center justify-center h-full gap-6 px-6">
             {/* Main Pages */}
             <div className="text-center">
               <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">Páginas</p>
