@@ -855,11 +855,11 @@ body::after {
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
-/* Landing page services grid fix */
+/* Landing page services grid - back to original */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
 }
 
 @media (min-width: 768px) {
@@ -869,77 +869,6 @@ body::after {
     max-width: 1000px;
     margin: 0 auto;
   }
-}
-
-/* Premium service cards for mobile */
-.service-card-premium {
-  @apply rounded-xl overflow-hidden transition-all duration-500 ease-out;
-  background: linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(10, 10, 10, 0.9) 100%);
-  border: 1px solid rgba(102, 84, 52, 0.2);
-  backdrop-filter: blur(15px);
-  position: relative;
-}
-
-.service-card-premium::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    transparent 0%,
-    rgba(247, 185, 41, 0.03) 50%,
-    transparent 100%
-  );
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.service-card-premium:hover::before {
-  opacity: 1;
-}
-
-.service-card-premium:hover {
-  transform: translateY(-2px);
-  border-color: rgba(247, 185, 41, 0.4);
-  box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.3),
-    0 0 15px rgba(247, 185, 41, 0.1);
-}
-
-/* Elegant mobile buttons matching brand colors */
-.btn-elegant-detail {
-  @apply flex items-center justify-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300;
-  background: linear-gradient(135deg, rgba(247, 185, 41, 0.1) 0%, rgba(247, 185, 41, 0.05) 100%);
-  border: 1px solid rgba(247, 185, 41, 0.3);
-  color: #F7B929;
-  min-height: 36px;
-}
-
-.btn-elegant-detail:hover {
-  background: linear-gradient(135deg, rgba(247, 185, 41, 0.2) 0%, rgba(247, 185, 41, 0.1) 100%);
-  border-color: rgba(247, 185, 41, 0.5);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(247, 185, 41, 0.2);
-}
-
-.btn-elegant-wa {
-  @apply flex items-center justify-center w-10 h-9 rounded-lg transition-all duration-300;
-  background: linear-gradient(135deg, rgba(247, 185, 41, 0.15) 0%, rgba(247, 185, 41, 0.08) 100%);
-  border: 1px solid rgba(247, 185, 41, 0.4);
-  min-height: 36px;
-}
-
-.btn-elegant-wa:hover {
-  background: linear-gradient(135deg, rgba(247, 185, 41, 0.25) 0%, rgba(247, 185, 41, 0.15) 100%);
-  border-color: rgba(247, 185, 41, 0.6);
-  transform: translateY(-1px) scale(1.05);
-  box-shadow: 0 4px 15px rgba(247, 185, 41, 0.3);
-}
-
-.btn-elegant-wa svg {
-  width: 14px;
-  height: 14px;
-  fill: #F7B929;
 }
 
 /* Enhanced button proportions for desktop */
