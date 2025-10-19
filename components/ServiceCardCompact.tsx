@@ -18,7 +18,7 @@ export default function ServiceCardCompact({ service }: { service: Service }) {
   return (
     <article className="service-card-compact group">
       {/* Image Section */}
-      <Link href={`/servicios/${service.slug}`} className="block relative h-32 overflow-hidden rounded-t-lg">
+      <Link href={`/servicios/${service.slug}`} className="block relative h-24 overflow-hidden rounded-t-lg">
         <Image
           src={service.imageUrl || "/images/placeholder.png"}
           alt={service.title}
@@ -28,32 +28,42 @@ export default function ServiceCardCompact({ service }: { service: Service }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
         
         {/* Badge on image */}
-        <div className="absolute top-2 right-2">
-          <span className="badge text-[10px]">{service.durationMin} min</span>
+        <div className="absolute top-1 right-1">
+          <span className="badge text-[9px] px-1.5 py-0.5">{service.durationMin} min</span>
         </div>
       </Link>
 
       {/* Content Section */}
-      <div className="p-4">
+      <div className="p-3">
         <Link href={`/servicios/${service.slug}`}>
-          <h3 className="text-base font-light text-white mb-2 line-clamp-2 hover:text-[var(--brand-yellow)] transition-colors">
+          <h3 className="text-sm font-light text-white mb-1.5 line-clamp-2 hover:text-[var(--brand-yellow)] transition-colors">
             {service.title}
           </h3>
         </Link>
         
-        <p className="text-xs text-gray-400 mb-3 line-clamp-2 leading-relaxed">
+        <p className="text-[10px] text-gray-400 mb-2 line-clamp-2 leading-relaxed">
           {service.shortDesc}
         </p>
 
-        {/* Price and CTA */}
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-[var(--brand-yellow)] font-medium text-sm">
+        {/* Price */}
+        <div className="mb-2">
+          <span className="text-[var(--brand-yellow)] font-medium text-xs">
             ${service.price.toLocaleString("es-CO")}
           </span>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-1.5">
+          <Link 
+            href={`/servicios/${service.slug}`}
+            className="btn-compact-detail flex-1"
+          >
+            Ver más
+          </Link>
           <WhatsAppButton 
-            className="btn-compact" 
+            className="btn-compact-wa" 
             message={message}
-            label="Consultar"
+            label=""
           />
         </div>
       </div>

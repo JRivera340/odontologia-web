@@ -3,12 +3,13 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SectionHeader from '../components/ui/SectionHeader';
 import WhatsAppButton from '../components/ui/WhatsAppButton';
+import ScrollToTop from '../components/ui/ScrollToTop';
 import ScrollReveal from '../components/ScrollReveal';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
-  // Servicios destacados con imágenes
+  // Servicios destacados con imágenes (4 servicios)
   const featuredServices = [
     {
       title: "Limpieza Dental Profesional",
@@ -32,7 +33,15 @@ export default function Home() {
       duration: "Consulta",
       price: "Desde 2,500,000",
       image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=800&q=80&auto=format&fit=crop",
-      slug: "ortodoncia"
+      slug: "ortodoncia-invisible"
+    },
+    {
+      title: "Implantes Dentales",
+      description: "Solución permanente para dientes perdidos. Restauración de la función y estética dental con implantes de titanio de alta calidad.",
+      duration: "90 min",
+      price: "3,500,000",
+      image: "https://images.unsplash.com/photo-1568605117036-f2c9e721239c?w=800&q=80&auto=format&fit=crop",
+      slug: "implantes-dentales"
     }
   ];
 
@@ -100,43 +109,43 @@ export default function Home() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {featuredServices.map((service, i) => (
-              <ScrollReveal key={i} delay={i * 150}>
-                <article className="card overflow-hidden group h-full flex flex-col">
-                  <div className="relative h-48 sm:h-56 md:h-64 image-container">
-                    <Image 
-                      src={service.image} 
-                      alt={service.title} 
-                      fill 
-                      className="object-cover"
-                    />
-                    <div className="image-overlay"></div>
-                  </div>
-                  <div className="p-6 md:p-8 flex-1 flex flex-col">
-                    <h3 className="text-xl md:text-2xl font-light text-white mb-3 md:mb-4">{service.title}</h3>
-                    <p className="text-sm md:text-base text-gray-400 leading-relaxed mb-4 md:mb-6 flex-1">
-                      {service.description}
-                    </p>
-                    <div className="flex items-center justify-between mb-4 md:mb-6 text-sm">
-                      <span className="badge">{service.duration}</span>
-                      <span className="text-[var(--brand-yellow)] font-medium text-sm md:text-base">${service.price}</span>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <Link href={`/servicios/${service.slug}`} className="btn btn-outline flex-1 text-center text-xs md:text-sm py-2 md:py-3">
-                        Ver más
-                      </Link>
-                      <WhatsAppButton 
-                        className="btn btn-wa flex-1 text-xs md:text-sm py-2 md:py-3"
-                        message={`Hola, me interesa información sobre ${service.title}.`}
-                        label="Consultar"
-                      />
-                    </div>
-                  </div>
-                </article>
-              </ScrollReveal>
-            ))}
-          </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                   {featuredServices.map((service, i) => (
+                     <ScrollReveal key={i} delay={i * 150}>
+                       <article className="card overflow-hidden group h-full flex flex-col">
+                         <div className="relative h-48 sm:h-56 md:h-64 image-container">
+                           <Image 
+                             src={service.image} 
+                             alt={service.title} 
+                             fill 
+                             className="object-cover"
+                           />
+                           <div className="image-overlay"></div>
+                         </div>
+                         <div className="p-6 md:p-8 flex-1 flex flex-col">
+                           <h3 className="text-xl md:text-2xl font-light text-white mb-3 md:mb-4">{service.title}</h3>
+                           <p className="text-sm md:text-base text-gray-400 leading-relaxed mb-4 md:mb-6 flex-1">
+                             {service.description}
+                           </p>
+                           <div className="flex items-center justify-between mb-4 md:mb-6 text-sm">
+                             <span className="badge">{service.duration}</span>
+                             <span className="text-[var(--brand-yellow)] font-medium text-sm md:text-base">${service.price}</span>
+                           </div>
+                           <div className="flex gap-3">
+                             <Link href={`/servicios/${service.slug}`} className="btn btn-outline flex-1 text-center text-xs md:text-sm py-2 md:py-3">
+                               Ver detalles
+                             </Link>
+                             <WhatsAppButton 
+                               className="btn btn-wa flex-1 text-xs md:text-sm py-2 md:py-3"
+                               message={`Hola, me interesa información sobre ${service.title}.`}
+                               label="Consultar"
+                             />
+                           </div>
+                         </div>
+                       </article>
+                     </ScrollReveal>
+                   ))}
+                 </div>
 
           <ScrollReveal>
             <div className="text-center mt-12 md:mt-16">
@@ -246,7 +255,8 @@ export default function Home() {
         </div>
       </section>
 
-      <Footer />
-    </>
-  );
-}
+             <Footer />
+             <ScrollToTop />
+           </>
+         );
+       }

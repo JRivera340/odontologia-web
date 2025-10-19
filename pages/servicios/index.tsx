@@ -4,6 +4,7 @@ import Topbar from '../../components/Topbar';
 import SectionHeader from '../../components/ui/SectionHeader';
 import ServiceCardPro from '../../components/ServiceCardPro';
 import ServiceCardCompact from '../../components/ServiceCardCompact';
+import ScrollToTop from '../../components/ui/ScrollToTop';
 import ScrollReveal from '../../components/ScrollReveal';
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
@@ -24,8 +25,8 @@ export default function ServicesPage({ services }: { services: any[] }) {
           
           {services.length > 0 ? (
             <>
-              {/* Mobile: Compact Grid (2 columns) */}
-              <div className="grid grid-cols-2 gap-4 md:hidden">
+              {/* Mobile: Compact Grid (3 columns) */}
+              <div className="grid grid-cols-3 gap-3 md:hidden">
                 {services.map((s) => (
                   <ServiceCardCompact key={s.id} service={s} />
                 ))}
@@ -57,6 +58,7 @@ export default function ServicesPage({ services }: { services: any[] }) {
         </div>
       </main>
       <Footer />
+      <ScrollToTop />
     </>
   );
 }

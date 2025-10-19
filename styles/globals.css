@@ -775,20 +775,38 @@ body::after {
     0 0 20px rgba(247, 185, 41, 0.1);
 }
 
-/* Compact button for mobile */
-.btn-compact {
-  @apply inline-flex items-center justify-center px-3 py-1.5 rounded-md text-xs font-medium;
-  background: rgba(247, 185, 41, 0.1);
-  border: 1px solid rgba(247, 185, 41, 0.3);
-  color: #F7B929;
+/* Compact buttons for mobile */
+.btn-compact-detail {
+  @apply inline-flex items-center justify-center px-2 py-1.5 rounded text-[10px] font-medium;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
   transition: all 0.3s ease;
   white-space: nowrap;
 }
 
-.btn-compact:hover {
-  background: rgba(247, 185, 41, 0.2);
-  border-color: #F7B929;
-  box-shadow: 0 0 15px rgba(247, 185, 41, 0.2);
+.btn-compact-detail:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.btn-compact-wa {
+  @apply inline-flex items-center justify-center w-8 h-6 rounded;
+  background: #25D366;
+  border: 1px solid #25D366;
+  transition: all 0.3s ease;
+}
+
+.btn-compact-wa:hover {
+  background: #20BA5A;
+  border-color: #20BA5A;
+  transform: scale(1.05);
+}
+
+.btn-compact-wa svg {
+  width: 12px;
+  height: 12px;
+  fill: white;
 }
 
 /* Masonry-style staggered animation */

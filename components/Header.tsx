@@ -42,12 +42,9 @@ export default function Header(){
       {/* Mobile Menu - Fixed full screen */}
       {menuOpen && (
         <div className="md:hidden fixed inset-0 z-40">
-          {/* Enhanced opaque background with pattern */}
-          <div className="absolute inset-0 bg-black/98 backdrop-blur-2xl"></div>
-          <div className="absolute inset-0 opacity-5" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(247, 185, 41, 0.3) 1px, transparent 0)`,
-            backgroundSize: '40px 40px'
-          }}></div>
+          {/* Ultra opaque background */}
+          <div className="absolute inset-0 bg-black"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-black/95 to-gray-900/95"></div>
           
           <nav className="relative flex flex-col items-center justify-center h-full gap-6 px-6">
             {/* Main Pages */}
