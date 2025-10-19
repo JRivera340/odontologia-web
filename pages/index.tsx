@@ -113,7 +113,7 @@ export default function Home() {
                    {featuredServices.map((service, i) => (
                      <ScrollReveal key={i} delay={i * 150}>
                        <article className="card overflow-hidden group h-full flex flex-col">
-                         <div className="relative h-40 sm:h-48 md:h-52 image-container">
+                         <div className="relative h-32 sm:h-40 md:h-52 image-container">
                            <Image 
                              src={service.image} 
                              alt={service.title} 
@@ -122,21 +122,27 @@ export default function Home() {
                            />
                            <div className="image-overlay"></div>
                          </div>
-                         <div className="p-4 md:p-6 flex-1 flex flex-col">
-                           <h3 className="text-lg md:text-xl font-light text-white mb-2 md:mb-3">{service.title}</h3>
-                           <p className="text-xs md:text-sm text-gray-400 leading-relaxed mb-3 md:mb-4 flex-1">
+                         <div className="p-3 md:p-6 flex-1 flex flex-col">
+                           <h3 className="text-sm md:text-xl font-light text-white mb-2 md:mb-3 line-clamp-2">{service.title}</h3>
+                           {/* Description only on desktop */}
+                           <p className="hidden md:block text-sm text-gray-400 leading-relaxed mb-3 md:mb-4 flex-1">
                              {service.description}
                            </p>
-                           <div className="flex items-center justify-between mb-3 md:mb-4 text-xs md:text-sm">
-                             <span className="badge text-[10px] md:text-xs">{service.duration}</span>
-                             <span className="text-[var(--brand-yellow)] font-medium text-xs md:text-sm">${service.price}</span>
+                           {/* Price and duration only on desktop */}
+                           <div className="hidden md:flex items-center justify-between mb-3 md:mb-4 text-xs md:text-sm">
+                             <span className="badge text-xs">{service.duration}</span>
+                             <span className="text-[var(--brand-yellow)] font-medium text-sm">${service.price}</span>
                            </div>
-                           <div className="flex gap-2 md:gap-3">
-                             <Link href={`/servicios/${service.slug}`} className="btn btn-outline btn-landing flex-1 text-center text-xs md:text-sm">
-                               Ver detalles
+                           {/* Mobile: Only price */}
+                           <div className="md:hidden mb-2">
+                             <span className="text-[var(--brand-yellow)] font-medium text-xs">${service.price}</span>
+                           </div>
+                           <div className="flex gap-1.5 md:gap-3">
+                             <Link href={`/servicios/${service.slug}`} className="btn btn-outline btn-landing flex-1 text-center text-[10px] md:text-sm">
+                               Ver más
                              </Link>
                              <WhatsAppButton 
-                               className="btn btn-wa btn-landing flex-1 text-xs md:text-sm"
+                               className="btn btn-wa btn-landing flex-1 text-[10px] md:text-sm"
                                message={`Hola, me interesa información sobre ${service.title}.`}
                                label="Consultar"
                              />

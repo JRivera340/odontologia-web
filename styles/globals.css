@@ -873,8 +873,8 @@ body::after {
 
 /* Enhanced button proportions for landing page */
 .btn-landing {
-  @apply px-4 py-2 text-xs font-medium rounded-lg transition-all duration-300;
-  min-height: 40px;
+  @apply px-2 py-1.5 text-[10px] font-medium rounded-md transition-all duration-300;
+  min-height: 32px;
 }
 
 .btn-landing:hover {
