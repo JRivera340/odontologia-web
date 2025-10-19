@@ -1,399 +1,249 @@
+import Topbar from '../components/Topbar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Link from 'next/link';
+import SectionHeader from '../components/ui/SectionHeader';
+import WhatsAppButton from '../components/ui/WhatsAppButton';
+import ScrollReveal from '../components/ScrollReveal';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
+  // Servicios destacados con imágenes locales
+  const featuredServices = [
+    {
+      title: "Limpieza Dental Profesional",
+      description: "Profilaxis completa con ultrasonido y pulido dental. Eliminación de sarro y placa bacteriana para una sonrisa saludable.",
+      duration: "45 min",
+      price: "150,000",
+      image: "/images/limpieza.jpg",
+      slug: "limpieza-dental"
+    },
+    {
+      title: "Blanqueamiento Dental LED",
+      description: "Tecnología de última generación con luz LED. Resultados visibles en una sola sesión, dientes hasta 8 tonos más blancos.",
+      duration: "60 min",
+      price: "350,000",
+      image: "/images/blanqueamiento.jpg",
+      slug: "blanqueamiento-dental"
+    },
+    {
+      title: "Ortodoncia Invisible",
+      description: "Alineadores transparentes personalizados. Corrección dental discreta y efectiva sin brackets metálicos.",
+      duration: "Consulta",
+      price: "Desde 2,500,000",
+      image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=800&q=80&auto=format&fit=crop",
+      slug: "ortodoncia"
+    }
+  ];
+
   return (
     <>
+      <Topbar />
       <Header />
-      
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-white to-gray-50 py-16">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+
+      {/* HERO */}
+      <section className="relative min-h-screen flex items-center pt-20 geometric-bg">
+        {/* Diagonal lines decoration */}
+        <div className="diagonal-lines"></div>
+        
+        {/* Dots pattern accent */}
+        <div className="dots-accent"></div>
+
+        <div className="container mx-auto px-6 py-20 grid md:grid-cols-2 gap-16 items-center relative z-10">
+          <ScrollReveal direction="left">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6" style={{color: "var(--brand-brown)"}}>
-                Consultorio Odontológico
+              <div className="text-sm text-gray-400 mb-6 tracking-widest uppercase">
+                Excelencia Odontológica
+              </div>
+              <h1 className="text-5xl md:text-6xl font-light mb-8 leading-tight">
+                <span className="text-white">Tu sonrisa,</span><br/>
+                <span style={{color: '#F7B929'}}>nuestra pasión</span>
               </h1>
-              <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-                Cuidado dental integral y de alta calidad con tecnología avanzada 
-                en un ambiente acogedor y profesional que genera confianza y tranquilidad.
+              <p className="text-lg text-gray-400 mb-10 leading-relaxed max-w-lg">
+                Tecnología avanzada y atención personalizada para cuidar tu salud dental con los más altos estándares de calidad.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
-                  href="/servicios" 
-                  className="px-8 py-4 rounded-lg text-center font-semibold transition-all hover:shadow-lg"
-                  style={{background: "var(--brand-yellow)", color: "var(--brand-brown)"}}
-                >
-                  Ver Nuestros Servicios
+                <Link href="/#servicios" className="btn btn-primary">
+                  Explorar Servicios
                 </Link>
+                <WhatsAppButton className="btn btn-wa" label="Agendar Cita" />
+              </div>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal direction="right">
+            <div className="relative h-[600px] rounded-xl overflow-hidden image-container">
+              <Image 
+                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1400&q=80&auto=format&fit=crop"
+                alt="Consultorio moderno" 
+                fill 
+                className="object-cover" 
+                priority 
+              />
+              <div className="image-overlay"></div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <div className="divider container mx-auto"></div>
+
+      {/* SERVICIOS DESTACADOS */}
+      <section id="servicios" className="py-32 relative">
+        <div className="container mx-auto px-6">
+          <ScrollReveal>
+            <div className="text-center mb-20">
+              <h2 className="h-section inline-block">Tratamientos destacados</h2>
+              <p className="text-gray-400 mt-6 text-lg max-w-2xl mx-auto">
+                Soluciones odontológicas con enfoque preventivo y estético de vanguardia
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredServices.map((service, i) => (
+              <ScrollReveal key={i} delay={i * 150}>
+                <article className="card overflow-hidden group h-full flex flex-col">
+                  <div className="relative h-64 image-container">
+                    <Image 
+                      src={service.image} 
+                      alt={service.title} 
+                      fill 
+                      className="object-cover"
+                      unoptimized={service.image.includes('.jpg')}
+                    />
+                    <div className="image-overlay"></div>
+                  </div>
+                  <div className="p-8 flex-1 flex flex-col">
+                    <h3 className="text-2xl font-light text-white mb-4">{service.title}</h3>
+                    <p className="text-gray-400 leading-relaxed mb-6 flex-1">
+                      {service.description}
+                    </p>
+                    <div className="flex items-center justify-between mb-6 text-sm">
+                      <span className="badge">{service.duration}</span>
+                      <span className="text-[var(--brand-yellow)] font-medium">${service.price}</span>
+                    </div>
+                    <div className="flex gap-3">
+                      <Link href={`/servicios/${service.slug}`} className="btn btn-outline flex-1 text-center text-sm">
+                        Ver más
+                      </Link>
+                      <WhatsAppButton 
+                        className="btn btn-wa flex-1 text-sm"
+                        message={`Hola, me interesa información sobre ${service.title}.`}
+                        label="Consultar"
+                      />
+                    </div>
+                  </div>
+                </article>
+              </ScrollReveal>
+            ))}
+          </div>
+
+          <ScrollReveal>
+            <div className="text-center mt-16">
+              <Link href="/servicios" className="btn btn-outline px-8">
+                Ver Catálogo Completo
+              </Link>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <div className="divider container mx-auto"></div>
+
+      {/* QUIÉNES SOMOS */}
+      <section id="nosotros" className="py-32 relative">
+        <div className="container mx-auto px-6">
+          <ScrollReveal>
+            <div className="text-center mb-20">
+              <h2 className="h-section inline-block">Quiénes Somos</h2>
+              <p className="text-gray-400 mt-6 text-lg max-w-3xl mx-auto">
+                Equipo de profesionales especializados en el cuidado de la salud bucal
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal direction="scale">
+            <div className="card p-12 max-w-4xl mx-auto mb-16">
+              <div className="flex items-start gap-6 mb-6">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--brand-yellow)] to-[var(--brand-brown)] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="text-gray-300 text-lg leading-relaxed mb-4">
+                    Como empresa de odontología, somos un equipo de profesionales especializados en el cuidado de la salud bucal. Nuestro objetivo principal es proporcionar servicios odontológicos de alta calidad para mantener la salud oral y el bienestar general de nuestros pacientes.
+                  </p>
+                  <p className="text-gray-400 leading-relaxed">
+                    Nos dedicamos a ofrecer una amplia gama de tratamientos y servicios que incluyen desde la limpieza dental y los procedimientos de restauración hasta la ortodoncia y la odontología estética. Además, nos esforzamos por mantenernos actualizados con las últimas tecnologías y técnicas en el campo de la odontología para asegurar el mejor cuidado posible para nuestros pacientes.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+            <ScrollReveal direction="left">
+              <article className="card p-10 h-full">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--brand-yellow)] to-[var(--brand-brown)] flex items-center justify-center mb-6">
+                  <svg className="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-light text-[var(--brand-yellow)] mb-6">Misión</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Proporcionar un cuidado dental integral y de alta calidad que mejore la salud bucal y el bienestar general de nuestros pacientes. Nos dedicamos a ofrecer tratamientos personalizados, utilizando tecnología avanzada y técnicas innovadoras, en un ambiente acogedor y profesional.
+                </p>
+              </article>
+            </ScrollReveal>
+
+            <ScrollReveal direction="right">
+              <article className="card p-10 h-full">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--brand-yellow)] to-[var(--brand-brown)] flex items-center justify-center mb-6">
+                  <svg className="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-light text-[var(--brand-yellow)] mb-6">Visión</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Ser reconocidos como líderes en el cuidado dental integral y preventivo, estableciendo un nuevo estándar de excelencia en la atención odontológica. Aspiramos a transformar la experiencia dental de nuestros pacientes mediante la incorporación de tecnología de punta y tratamientos innovadores, asegurando que cada visita sea cómoda y efectiva.
+                </p>
+              </article>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      <div className="divider container mx-auto"></div>
+
+      {/* CTA FINAL */}
+      <section id="agendar" className="py-32">
+        <div className="container mx-auto px-6">
+          <ScrollReveal direction="scale">
+            <div className="max-w-3xl mx-auto text-center card p-16">
+              <h2 className="text-4xl md:text-5xl font-light mb-6">
+                <span className="text-white">¿Listo para</span><br/>
+                <span style={{color: '#F7B929'}}>tu mejor sonrisa?</span>
+              </h2>
+              <p className="text-gray-400 text-lg mb-10 leading-relaxed">
+                Agenda tu cita y descubre una experiencia odontológica premium
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <WhatsAppButton 
+                  className="btn btn-primary px-8" 
+                  label="Agendar por WhatsApp" 
+                />
                 <a 
-                  href="https://wa.me/573113440504?text=Buenos%20días.%20Me%20gustaría%20agendar%20una%20cita%20para%20consulta%20odontológica.%20¿Cuál%20sería%20su%20disponibilidad%20más%20próxima?%20Quedo%20atento%20a%20su%20respuesta.%20Gracias." 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="px-8 py-4 rounded-lg border-2 text-center font-semibold transition-all hover:shadow-lg"
-                  style={{borderColor: "var(--brand-brown)", color: "var(--brand-brown)"}}
+                  href="mailto:riveragonzalezjoshua404@gmail.com" 
+                  className="btn btn-outline px-8"
                 >
-                  Agenda tu Cita
+                  Escribir correo
                 </a>
               </div>
             </div>
-            <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
-              <Image 
-                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&h=400&fit=crop&crop=center" 
-                alt="Consultorio odontológico moderno" 
-                fill 
-                style={{ objectFit: 'cover' }}
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Sobre Nosotros - Misión y Visión */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{color: "var(--brand-brown)"}}>
-              Sobre Nosotros
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprometidos con la excelencia en el cuidado dental y el bienestar de nuestros pacientes
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-12">
-            {/* Misión */}
-            <div className="bg-gray-50 p-8 rounded-2xl">
-              <div className="flex items-center mb-6">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center mr-4" style={{background: "var(--brand-yellow)"}}>
-                  <span className="text-2xl">🎯</span>
-                </div>
-                <h3 className="text-2xl font-bold" style={{color: "var(--brand-brown)"}}>
-                  Nuestra Misión
-                </h3>
-              </div>
-              <p className="text-gray-700 leading-relaxed">
-                Proporcionar un cuidado dental integral y de alta calidad que mejore la salud bucal 
-                y el bienestar general de los pacientes, ofreciendo tratamientos personalizados con 
-                tecnología avanzada y técnicas innovadoras en un ambiente acogedor y profesional 
-                que genere confianza y tranquilidad.
-              </p>
-            </div>
-
-            {/* Visión */}
-            <div className="bg-gray-50 p-8 rounded-2xl">
-              <div className="flex items-center mb-6">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center mr-4" style={{background: "var(--brand-yellow)"}}>
-                  <span className="text-2xl">🌟</span>
-                </div>
-                <h3 className="text-2xl font-bold" style={{color: "var(--brand-brown)"}}>
-                  Nuestra Visión
-                </h3>
-              </div>
-              <p className="text-gray-700 leading-relaxed">
-                Ser reconocidos como líderes en el cuidado dental integral y preventivo en Bogotá D.C., 
-                estableciendo un nuevo estándar de excelencia en la atención odontológica mediante la 
-                incorporación constante de tecnología de punta, tratamientos innovadores y un enfoque 
-                centrado en la experiencia del paciente.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Valores Corporativos */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{color: "var(--brand-brown)"}}>
-              Nuestros Valores
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Los principios que guían nuestro trabajo y definen nuestra filosofía de atención
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Profesionalismo */}
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto" style={{background: "var(--brand-yellow)"}}>
-                <span className="text-2xl">👨‍⚕️</span>
-              </div>
-              <h3 className="text-xl font-bold text-center mb-4" style={{color: "var(--brand-brown)"}}>
-                Profesionalismo
-              </h3>
-              <p className="text-gray-700 text-center leading-relaxed">
-                Atención confiable basada en estándares éticos, científicos y protocolos 
-                de calidad internacional.
-              </p>
-            </div>
-
-            {/* Cuidado */}
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto" style={{background: "var(--brand-yellow)"}}>
-                <span className="text-2xl">❤️</span>
-              </div>
-              <h3 className="text-xl font-bold text-center mb-4" style={{color: "var(--brand-brown)"}}>
-                Cuidado
-              </h3>
-              <p className="text-gray-700 text-center leading-relaxed">
-                Compromiso genuino con la salud, el bienestar y la comodidad de cada 
-                paciente durante todo su proceso de atención.
-              </p>
-            </div>
-
-            {/* Innovación */}
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto" style={{background: "var(--brand-yellow)"}}>
-                <span className="text-2xl">🚀</span>
-              </div>
-              <h3 className="text-xl font-bold text-center mb-4" style={{color: "var(--brand-brown)"}}>
-                Innovación
-              </h3>
-              <p className="text-gray-700 text-center leading-relaxed">
-                Adopción continua de nuevas tecnologías, materiales de última generación 
-                y prácticas odontológicas modernas.
-              </p>
-            </div>
-
-            {/* Confianza */}
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto" style={{background: "var(--brand-yellow)"}}>
-                <span className="text-2xl">🤝</span>
-              </div>
-              <h3 className="text-xl font-bold text-center mb-4" style={{color: "var(--brand-brown)"}}>
-                Confianza
-              </h3>
-              <p className="text-gray-700 text-center leading-relaxed">
-                Transparencia absoluta en la comunicación, claridad en los procedimientos 
-                y calidez en el trato humano.
-              </p>
-            </div>
-
-            {/* Estética y Armonía */}
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow lg:col-span-1 md:col-span-2 lg:col-start-2">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto" style={{background: "var(--brand-yellow)"}}>
-                <span className="text-2xl">✨</span>
-              </div>
-              <h3 className="text-xl font-bold text-center mb-4" style={{color: "var(--brand-brown)"}}>
-                Estética y Armonía
-              </h3>
-              <p className="text-gray-700 text-center leading-relaxed">
-                Búsqueda de la excelencia estética tanto en los tratamientos dentales 
-                como en la imagen visual y ambiental de la clínica.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Servicios Destacados */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{color: "var(--brand-brown)"}}>
-              Nuestros Servicios
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Tratamientos especializados con tecnología de punta para tu salud dental
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* Servicio 1 */}
-            <div className="text-center group">
-              <div className="relative h-48 mb-6 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow">
-                <Image 
-                  src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=300&fit=crop" 
-                  alt="Limpieza dental profesional" 
-                  fill 
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
-              <h3 className="text-xl font-bold mb-3" style={{color: "var(--brand-brown)"}}>
-                Limpieza Dental
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Limpieza profesional completa con pulido y recomendaciones personalizadas.
-              </p>
-              <p className="font-semibold" style={{color: "var(--brand-brown)"}}>
-                45 min • $80,000
-              </p>
-            </div>
-
-            {/* Servicio 2 */}
-            <div className="text-center group">
-              <div className="relative h-48 mb-6 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow">
-                <Image 
-                  src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=300&fit=crop" 
-                  alt="Blanqueamiento dental" 
-                  fill 
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
-              <h3 className="text-xl font-bold mb-3" style={{color: "var(--brand-brown)"}}>
-                Blanqueamiento
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Tratamiento de blanqueamiento profesional en consultorio con resultados inmediatos.
-              </p>
-              <p className="font-semibold" style={{color: "var(--brand-brown)"}}>
-                60 min • $200,000
-              </p>
-            </div>
-
-            {/* Servicio 3 */}
-            <div className="text-center group">
-              <div className="relative h-48 mb-6 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow">
-                <Image 
-                  src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=300&fit=crop" 
-                  alt="Ortodoncia" 
-                  fill 
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
-              <h3 className="text-xl font-bold mb-3" style={{color: "var(--brand-brown)"}}>
-                Ortodoncia
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Corrección de la posición dental con brackets tradicionales y estéticos.
-              </p>
-              <p className="font-semibold" style={{color: "var(--brand-brown)"}}>
-                Consulta • $50,000
-              </p>
-            </div>
-          </div>
-
-          <div className="text-center">
-            <Link 
-              href="/servicios" 
-              className="inline-block px-8 py-4 rounded-lg font-semibold transition-all hover:shadow-lg"
-              style={{background: "var(--brand-yellow)", color: "var(--brand-brown)"}}
-            >
-              Ver Todos los Servicios
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Galería del Consultorio */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{color: "var(--brand-brown)"}}>
-              Nuestras Instalaciones
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Espacios modernos y cómodos diseñados para tu tranquilidad y bienestar
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="relative h-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <Image 
-                src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=400&h=300&fit=crop" 
-                alt="Sala de espera moderna" 
-                fill 
-                style={{ objectFit: 'cover' }}
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-end">
-                <p className="text-white font-semibold p-4">Sala de Espera</p>
-              </div>
-            </div>
-
-            <div className="relative h-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <Image 
-                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=300&fit=crop" 
-                alt="Consultorio principal" 
-                fill 
-                style={{ objectFit: 'cover' }}
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-end">
-                <p className="text-white font-semibold p-4">Consultorio Principal</p>
-              </div>
-            </div>
-
-            <div className="relative h-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <Image 
-                src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&h=300&fit=crop" 
-                alt="Equipos modernos" 
-                fill 
-                style={{ objectFit: 'cover' }}
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-end">
-                <p className="text-white font-semibold p-4">Tecnología Avanzada</p>
-              </div>
-            </div>
-
-            <div className="relative h-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <Image 
-                src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=300&fit=crop" 
-                alt="Área de esterilización" 
-                fill 
-                style={{ objectFit: 'cover' }}
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-end">
-                <p className="text-white font-semibold p-4">Área de Esterilización</p>
-              </div>
-            </div>
-
-            <div className="relative h-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <Image 
-                src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=300&fit=crop" 
-                alt="Recepción" 
-                fill 
-                style={{ objectFit: 'cover' }}
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-end">
-                <p className="text-white font-semibold p-4">Recepción</p>
-              </div>
-            </div>
-
-            <div className="relative h-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <Image 
-                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=300&fit=crop" 
-                alt="Consultorio secundario" 
-                fill 
-                style={{ objectFit: 'cover' }}
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-end">
-                <p className="text-white font-semibold p-4">Consultorio Secundario</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action Final */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{color: "var(--brand-brown)"}}>
-            ¿Listo para cuidar tu sonrisa?
-          </h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Agenda tu cita hoy mismo y descubre la diferencia de un cuidado dental profesional y personalizado.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="https://wa.me/573113440504?text=Buenos%20días.%20Me%20gustaría%20agendar%20una%20cita%20para%20consulta%20odontológica.%20¿Cuál%20sería%20su%20disponibilidad%20más%20próxima?%20Quedo%20atento%20a%20su%20respuesta.%20Gracias." 
-              target="_blank" 
-              rel="noreferrer"
-              className="px-8 py-4 rounded-lg font-semibold transition-all hover:shadow-lg"
-              style={{background: "var(--brand-yellow)", color: "var(--brand-brown)"}}
-            >
-              Contactar por WhatsApp
-            </a>
-            <Link 
-              href="/servicios" 
-              className="px-8 py-4 rounded-lg border-2 font-semibold transition-all hover:shadow-lg"
-              style={{borderColor: "var(--brand-brown)", color: "var(--brand-brown)"}}
-            >
-              Ver Servicios y Precios
-            </Link>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 

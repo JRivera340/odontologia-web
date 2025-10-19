@@ -1,135 +1,80 @@
-// pages/servicios/[slug].tsx
-import { GetServerSideProps } from 'next';
-import Image from 'next/image';
+import Topbar from '../../components/Topbar';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import prisma from '../../lib/prisma';
-import buildWhatsAppUrl from '../../lib/buildWhatsAppUrl';
-import { useCart } from '../../context/CartContext';
-import React from 'react';
+import WhatsAppButton from '../../components/ui/WhatsAppButton';
+import ScrollReveal from '../../components/ScrollReveal';
+import { PrismaClient } from "@prisma/client";
+import Image from 'next/image';
 
-type Service = {
-  id: number;
-  title: string;
-  slug: string;
-  longDesc?: string | null;
-  shortDesc?: string | null;
-  durationMin: number;
-  price: number;
-  imageUrl?: string | null;
-};
+const prisma = new PrismaClient();
 
-type Props = {
-  service: Service;
-  whatsappPhone: string;
-};
-
-export default function ServicePage({ service, whatsappPhone }: Props) {
-  const { add } = useCart();
-
-  const handleAdd = () =>
-    add({
-      id: service.id,
-      title: service.title,
-      slug: service.slug,
-      price: service.price,
-      durationMin: service.durationMin,
-      imageUrl: service.imageUrl || undefined,
-    });
-
-  const handleWhatsAppSingle = () => {
-    const url = buildWhatsAppUrl(whatsappPhone, [
-      { title: service.title, price: service.price, durationMin: service.durationMin },
-    ]);
-    if (typeof window !== 'undefined') window.open(url, '_blank');
-  };
-
+export default function ServiceDetail({ service }: { service: any }){
+  if(!service) return null;
   return (
     <>
+      <Topbar />
       <Header />
-      <main className="container mx-auto p-6">
-        <div className="grid md:grid-cols-2 gap-6 items-start">
-          <div className="w-full h-80 relative rounded overflow-hidden">
-            {service.imageUrl ? (
-              <Image src={service.imageUrl} alt={service.title} fill style={{ objectFit: 'cover' }} />
-            ) : (
-              <Image src="/placeholder.svg" alt="placeholder" fill style={{ objectFit: 'contain' }} />
-            )}
-          </div>
+      <section className="min-h-screen py-32">
+        <div className="container mx-auto px-6">
+          <div className="max-w-5xl mx-auto">
+            <ScrollReveal direction="scale">
+              <div className="relative h-[500px] rounded-xl overflow-hidden mb-16 image-container">
+                <Image src={service.imageUrl || '/images/placeholder.png'} alt={service.title} fill className="object-cover" />
+                <div className="image-overlay"></div>
+                <div className="absolute bottom-12 left-12 right-12 z-10">
+                  <h1 className="text-5xl font-light text-white mb-6">{service.title}</h1>
+                  <div className="flex flex-wrap gap-4">
+                    <span className="badge text-base">{service.durationMin} min</span>
+                    <span className="badge text-base font-medium">${service.price.toLocaleString("es-CO")}</span>
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+            
+            <ScrollReveal>
+              <div className="card p-12 mb-12">
+                <h2 className="text-3xl font-light mb-8 text-[var(--brand-yellow)]">Descripción del tratamiento</h2>
+                <p className="text-gray-400 text-lg leading-relaxed">{service.longDesc || service.shortDesc}</p>
+              </div>
+            </ScrollReveal>
 
-          <div>
-            <h1 className="text-2xl font-bold" style={{ color: "var(--brand-brown)" }}>{service.title}</h1>
-            <p className="mt-2 text-gray-700">{service.longDesc || service.shortDesc}</p>
-
-            <div className="mt-4 flex items-center gap-6">
-              <div><strong>Duración:</strong> {service.durationMin} min</div>
-              <div><strong>Precio:</strong> ${service.price}</div>
-            </div>
-
-            <div className="mt-6 flex gap-3">
-              <button
-                onClick={handleAdd}
-                className="px-4 py-2 rounded"
-                style={{ background: "var(--brand-yellow)" }}
-                aria-label={`Agregar ${service.title} al carrito`}
-              >
-                Agregar al carrito
-              </button>
-
-              <button
-                onClick={handleWhatsAppSingle}
-                className="px-4 py-2 rounded border"
-                aria-label={`Contactar por WhatsApp sobre ${service.title}`}
-              >
-                Contactar por WhatsApp
-              </button>
-            </div>
+            <ScrollReveal direction="scale">
+              <div className="card p-12 text-center">
+                <h3 className="text-3xl font-light mb-6">
+                  <span className="text-white">¿Interesado en</span>
+                  <span className="text-[var(--brand-yellow)]"> este tratamiento?</span>
+                </h3>
+                <p className="text-gray-400 mb-8 text-lg">Contáctanos y obtén asesoría personalizada</p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-xl mx-auto">
+                  <WhatsAppButton className="btn btn-primary px-8"
+                    message={`¡Hola! Estoy interesad@ en: ${service.title} (${service.durationMin} min • $${service.price.toLocaleString("es-CO")}). ¿Podrían darme más información?`}
+                    label="Agendar por WhatsApp" />
+                  <a href="mailto:riveragonzalezjoshua404@gmail.com" className="btn btn-outline px-8">
+                    Escribir correo
+                  </a>
+                </div>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
-      </main>
+      </section>
       <Footer />
     </>
   );
 }
 
-// ✅ SOLUCIÓN ROBUSTA: SSR en lugar de SSG + revalidación
-//
-// Cambio de getStaticPaths + getStaticProps a getServerSideProps
-//
-// Ventajas:
-// 1. Cambios en admin se ven INMEDIATAMENTE (sin esperar revalidación)
-// 2. Funciona igual en desarrollo y producción
-// 3. No requiere fallback: 'blocking' ni complejidad adicional
-// 4. Más simple de entender y mantener
-//
-// Consideraciones de rendimiento:
-// - Para un catálogo de servicios odontológicos (normalmente <50 servicios),
-//   SSR es perfectamente adecuado
-// - Vercel/Netlify cachean automáticamente las páginas en CDN
-// - La diferencia de velocidad vs SSG es imperceptible (milisegundos)
-// - Si en el futuro hay miles de servicios, se puede implementar
-//   caché Redis o volver a SSG con mejor estrategia
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const slug = params?.slug as string;
-  
+export async function getStaticPaths(){
   try {
-    const service = await prisma.service.findUnique({
-      where: { slug },
-    });
+    const services = await prisma.service.findMany({ where: { published: true }, select: { slug: true }});
+    return { paths: services.map(s => ({ params: { slug: s.slug } })), fallback: 'blocking' };
+  } catch { return { paths: [], fallback: 'blocking' }; }
+}
 
-    if (!service || !service.published) {
-      return { notFound: true };
-    }
-
-    return {
-      props: {
-        service: JSON.parse(JSON.stringify(service)),
-        whatsappPhone: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.WHATSAPP_PHONE || '+573113440504',
-      },
-    };
-  } catch (error) {
-    console.error('Error fetching service:', error);
-    return { notFound: true };
-  }
-};
+export async function getStaticProps({ params }: any){
+  try {
+    const service = await prisma.service.findFirst({ where: { slug: params.slug, published: true }});
+    if(!service) return { notFound: true };
+    const serializedService = { ...service, createdAt: service.createdAt.toISOString(), updatedAt: service.updatedAt.toISOString() };
+    return { props: { service: serializedService }, revalidate: 60 };
+  } catch { return { notFound: true }; }
+}
