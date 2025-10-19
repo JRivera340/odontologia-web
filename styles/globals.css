@@ -906,38 +906,40 @@ body::after {
     0 0 15px rgba(247, 185, 41, 0.1);
 }
 
-/* Professional mobile buttons */
-.btn-premium-detail {
+/* Elegant mobile buttons matching brand colors */
+.btn-elegant-detail {
   @apply flex items-center justify-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: white;
+  background: linear-gradient(135deg, rgba(247, 185, 41, 0.1) 0%, rgba(247, 185, 41, 0.05) 100%);
+  border: 1px solid rgba(247, 185, 41, 0.3);
+  color: #F7B929;
   min-height: 36px;
 }
 
-.btn-premium-detail:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.25);
+.btn-elegant-detail:hover {
+  background: linear-gradient(135deg, rgba(247, 185, 41, 0.2) 0%, rgba(247, 185, 41, 0.1) 100%);
+  border-color: rgba(247, 185, 41, 0.5);
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(247, 185, 41, 0.2);
 }
 
-.btn-premium-wa {
+.btn-elegant-wa {
   @apply flex items-center justify-center w-10 h-9 rounded-lg transition-all duration-300;
-  background: linear-gradient(135deg, #25D366 0%, #20BA5A 100%);
-  border: 1px solid #25D366;
+  background: linear-gradient(135deg, rgba(247, 185, 41, 0.15) 0%, rgba(247, 185, 41, 0.08) 100%);
+  border: 1px solid rgba(247, 185, 41, 0.4);
   min-height: 36px;
 }
 
-.btn-premium-wa:hover {
-  background: linear-gradient(135deg, #20BA5A 0%, #1DA851 100%);
+.btn-elegant-wa:hover {
+  background: linear-gradient(135deg, rgba(247, 185, 41, 0.25) 0%, rgba(247, 185, 41, 0.15) 100%);
+  border-color: rgba(247, 185, 41, 0.6);
   transform: translateY(-1px) scale(1.05);
-  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 4px 15px rgba(247, 185, 41, 0.3);
 }
 
-.btn-premium-wa svg {
+.btn-elegant-wa svg {
   width: 14px;
   height: 14px;
-  fill: white;
+  fill: #F7B929;
 }
 
 /* Enhanced button proportions for desktop */
