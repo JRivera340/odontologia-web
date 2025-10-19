@@ -42,29 +42,58 @@ export default function Header(){
       {/* Mobile Menu - Fixed full screen */}
       {menuOpen && (
         <div className="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-xl">
-          <nav className="flex flex-col items-center justify-center h-full gap-8 px-6">
-            <Link 
-              href="/#servicios" 
-              className="text-xl font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
-              onClick={() => setMenuOpen(false)}
-            >
-              Servicios
-            </Link>
-            <Link 
-              href="/#nosotros" 
-              className="text-xl font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
-              onClick={() => setMenuOpen(false)}
-            >
-              Nosotros
-            </Link>
-            <Link 
-              href="/servicios" 
-              className="text-xl font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
-              onClick={() => setMenuOpen(false)}
-            >
-              Catálogo
-            </Link>
-            <div className="pt-4 w-full max-w-xs px-6">
+          <nav className="flex flex-col items-center justify-center h-full gap-6 px-6">
+            {/* Main Pages */}
+            <div className="text-center">
+              <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">Páginas</p>
+              <div className="flex flex-col gap-4">
+                <Link 
+                  href="/" 
+                  className="text-lg font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Inicio
+                </Link>
+                <Link 
+                  href="/servicios" 
+                  className="text-lg font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Catálogo Completo
+                </Link>
+              </div>
+            </div>
+
+            {/* Landing Sections */}
+            <div className="text-center border-t border-gray-800 pt-6 w-full max-w-xs">
+              <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">Navegar</p>
+              <div className="flex flex-col gap-4">
+                <Link 
+                  href="/#servicios" 
+                  className="text-lg font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Servicios Destacados
+                </Link>
+                <Link 
+                  href="/#nosotros" 
+                  className="text-lg font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Quiénes Somos
+                </Link>
+                <Link 
+                  href="/#agendar" 
+                  className="text-lg font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Agendar Cita
+                </Link>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="pt-4 w-full max-w-xs px-6 border-t border-gray-800">
               <WhatsAppButton 
                 className="btn btn-primary w-full text-sm py-3" 
                 label="Agendar por WhatsApp" 

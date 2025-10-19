@@ -12,21 +12,30 @@ export default function ServicesPage({ services }: { services: any[] }) {
     <>
       <Topbar />
       <Header />
-      <main className="min-h-screen py-32">
-        <div className="container mx-auto px-6">
+      <main className="min-h-screen py-16 md:py-32 bg-pattern">
+        <div className="container mx-auto px-4 md:px-6">
           <ScrollReveal>
             <SectionHeader 
               title="Catálogo de servicios" 
               subtitle="Conoce nuestros tratamientos especializados y resuelve tus dudas directamente por WhatsApp" 
             />
           </ScrollReveal>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((s, i) => (
-              <ScrollReveal key={s.id} delay={i * 100}>
-                <ServiceCardPro service={s} />
-              </ScrollReveal>
-            ))}
-          </div>
+          
+          {services.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {services.map((s, i) => (
+                <ScrollReveal key={s.id} delay={i * 100}>
+                  <ServiceCardPro service={s} />
+                </ScrollReveal>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20">
+              <p className="text-gray-400 text-lg">
+                No hay servicios disponibles en este momento.
+              </p>
+            </div>
+          )}
         </div>
       </main>
       <Footer />

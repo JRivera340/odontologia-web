@@ -8,14 +8,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
-  // Servicios destacados con imágenes locales
+  // Servicios destacados con imágenes
   const featuredServices = [
     {
       title: "Limpieza Dental Profesional",
       description: "Profilaxis completa con ultrasonido y pulido dental. Eliminación de sarro y placa bacteriana para una sonrisa saludable.",
       duration: "45 min",
       price: "150,000",
-      image: "/images/limpieza.jpg",
+      image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&q=80&auto=format&fit=crop",
       slug: "limpieza-dental"
     },
     {
@@ -23,7 +23,7 @@ export default function Home() {
       description: "Tecnología de última generación con luz LED. Resultados visibles en una sola sesión, dientes hasta 8 tonos más blancos.",
       duration: "60 min",
       price: "350,000",
-      image: "/images/blanqueamiento.jpg",
+      image: "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800&q=80&auto=format&fit=crop",
       slug: "blanqueamiento-dental"
     },
     {
@@ -110,7 +110,6 @@ export default function Home() {
                       alt={service.title} 
                       fill 
                       className="object-cover"
-                      unoptimized={service.image.includes('.jpg')}
                     />
                     <div className="image-overlay"></div>
                   </div>
