@@ -112,8 +112,8 @@ export default function Home() {
                  <div className="services-grid">
                    {featuredServices.map((service, i) => (
                      <ScrollReveal key={i} delay={i * 150}>
-                       <article className="card overflow-hidden group h-full flex flex-col">
-                         <div className="relative h-32 sm:h-40 md:h-52 image-container">
+                       <article className="service-card-premium group h-full flex flex-col">
+                         <div className="relative h-28 sm:h-36 md:h-52 image-container">
                            <Image 
                              src={service.image} 
                              alt={service.title} 
@@ -121,9 +121,15 @@ export default function Home() {
                              className="object-cover"
                            />
                            <div className="image-overlay"></div>
+                           {/* Mobile: Elegant overlay with title */}
+                           <div className="md:hidden absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                           <h3 className="md:hidden absolute bottom-3 left-3 right-3 text-white text-sm font-light leading-tight line-clamp-2">
+                             {service.title}
+                           </h3>
                          </div>
-                         <div className="p-3 md:p-6 flex-1 flex flex-col">
-                           <h3 className="text-sm md:text-xl font-light text-white mb-2 md:mb-3 line-clamp-2">{service.title}</h3>
+                         <div className="p-2 md:p-6 flex-1 flex flex-col">
+                           {/* Desktop title */}
+                           <h3 className="hidden md:block text-xl font-light text-white mb-3 line-clamp-2">{service.title}</h3>
                            {/* Description only on desktop */}
                            <p className="hidden md:block text-sm text-gray-400 leading-relaxed mb-3 md:mb-4 flex-1">
                              {service.description}
@@ -133,16 +139,28 @@ export default function Home() {
                              <span className="badge text-xs">{service.duration}</span>
                              <span className="text-[var(--brand-yellow)] font-medium text-sm">${service.price}</span>
                            </div>
-                           {/* Mobile: Only price */}
-                           <div className="md:hidden mb-2">
-                             <span className="text-[var(--brand-yellow)] font-medium text-xs">${service.price}</span>
-                           </div>
-                           <div className="flex gap-1.5 md:gap-3">
-                             <Link href={`/servicios/${service.slug}`} className="btn btn-outline btn-landing flex-1 text-center text-[10px] md:text-sm">
-                               Ver más
+                           {/* Mobile: Professional action buttons */}
+                           <div className="md:hidden flex gap-2 mt-2">
+                             <Link href={`/servicios/${service.slug}`} className="btn-premium-detail flex-1">
+                               <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                               </svg>
+                               Ver detalles
                              </Link>
                              <WhatsAppButton 
-                               className="btn btn-wa btn-landing flex-1 text-[10px] md:text-sm"
+                               className="btn-premium-wa"
+                               message={`Hola, me interesa información sobre ${service.title}.`}
+                               label=""
+                             />
+                           </div>
+                           {/* Desktop buttons */}
+                           <div className="hidden md:flex gap-3">
+                             <Link href={`/servicios/${service.slug}`} className="btn btn-outline btn-landing flex-1 text-center text-sm">
+                               Ver detalles
+                             </Link>
+                             <WhatsAppButton 
+                               className="btn btn-wa btn-landing flex-1 text-sm"
                                message={`Hola, me interesa información sobre ${service.title}.`}
                                label="Consultar"
                              />

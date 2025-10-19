@@ -871,19 +871,81 @@ body::after {
   }
 }
 
-/* Enhanced button proportions for landing page */
+/* Premium service cards for mobile */
+.service-card-premium {
+  @apply rounded-xl overflow-hidden transition-all duration-500 ease-out;
+  background: linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(10, 10, 10, 0.9) 100%);
+  border: 1px solid rgba(102, 84, 52, 0.2);
+  backdrop-filter: blur(15px);
+  position: relative;
+}
+
+.service-card-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(247, 185, 41, 0.03) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.service-card-premium:hover::before {
+  opacity: 1;
+}
+
+.service-card-premium:hover {
+  transform: translateY(-2px);
+  border-color: rgba(247, 185, 41, 0.4);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(247, 185, 41, 0.1);
+}
+
+/* Professional mobile buttons */
+.btn-premium-detail {
+  @apply flex items-center justify-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  min-height: 36px;
+}
+
+.btn-premium-detail:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-premium-wa {
+  @apply flex items-center justify-center w-10 h-9 rounded-lg transition-all duration-300;
+  background: linear-gradient(135deg, #25D366 0%, #20BA5A 100%);
+  border: 1px solid #25D366;
+  min-height: 36px;
+}
+
+.btn-premium-wa:hover {
+  background: linear-gradient(135deg, #20BA5A 0%, #1DA851 100%);
+  transform: translateY(-1px) scale(1.05);
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.btn-premium-wa svg {
+  width: 14px;
+  height: 14px;
+  fill: white;
+}
+
+/* Enhanced button proportions for desktop */
 .btn-landing {
-  @apply px-2 py-1.5 text-[10px] font-medium rounded-md transition-all duration-300;
-  min-height: 32px;
+  @apply px-5 py-2.5 text-sm font-medium rounded-lg transition-all duration-300;
+  min-height: 44px;
 }
 
 .btn-landing:hover {
   transform: translateY(-1px);
-}
-
-@media (min-width: 768px) {
-  .btn-landing {
-    @apply px-5 py-2.5 text-sm;
-    min-height: 44px;
-  }
 }
