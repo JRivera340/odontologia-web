@@ -526,3 +526,191 @@ body::after {
   background-size: 200% 100%;
   animation: shine 8s linear infinite;
 }
+
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE FIRST
+   ======================================== */
+
+/* Reduce background complexity on mobile for performance */
+@media (max-width: 768px) {
+  body::before {
+    width: 150%;
+    height: 150%;
+    animation: rotate-rays 300s linear infinite;
+    opacity: 0.6;
+  }
+  
+  body::after {
+    background-size: 80px 80px;
+    opacity: 0.4;
+  }
+  
+  /* Smaller geometric elements on mobile */
+  .geometric-bg::before {
+    width: 150px;
+    height: 150px;
+    top: 5%;
+    right: -20px;
+  }
+  
+  .geometric-bg::after {
+    width: 120px;
+    height: 120px;
+    bottom: 10%;
+    left: -30px;
+  }
+  
+  /* Hide diagonal lines on small screens for cleaner look */
+  .diagonal-lines {
+    display: none;
+  }
+  
+  /* Smaller dots pattern */
+  .dots-accent {
+    background-size: 30px 30px;
+  }
+  
+  /* Container padding adjustments */
+  .container {
+    @apply px-4;
+  }
+  
+  /* Smaller section titles on mobile */
+  .h-section {
+    @apply text-2xl;
+  }
+  
+  .h-section::after {
+    width: 40px;
+    bottom: -8px;
+  }
+  
+  /* Better card spacing on mobile */
+  .card {
+    @apply p-6;
+  }
+  
+  /* Buttons full width on mobile for better UX */
+  .btn-mobile-full {
+    @apply w-full;
+  }
+  
+  /* Reduce hover effects on touch devices */
+  .card:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* Divider spacing optimization */
+  .divider {
+    margin: 2rem auto;
+  }
+  
+  /* Badge responsive sizing */
+  .badge {
+    @apply text-[10px] px-2 py-0.5;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .geometric-bg::before {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .geometric-bg::after {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .diagonal-lines {
+    opacity: 0.08;
+  }
+}
+
+/* Large screens - full effects */
+@media (min-width: 1024px) {
+  /* Enhanced parallax effect on desktop */
+  .image-container:hover img {
+    transform: scale(1.12) rotate(1deg);
+  }
+  
+  /* Smoother animations on powerful devices */
+  .card {
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .card:hover {
+    transform: translateY(-8px) scale(1.01);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Disable complex hover effects on touch */
+  .card:hover::before {
+    display: none;
+  }
+  
+  /* Larger tap targets */
+  .btn {
+    @apply min-h-[48px];
+  }
+  
+  /* Simplify animations for performance */
+  * {
+    transition-duration: 150ms;
+  }
+  
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    transition-duration: 0.8s;
+  }
+}
+
+/* Extra small devices (phones in portrait) */
+@media (max-width: 380px) {
+  .h-section {
+    @apply text-xl;
+  }
+  
+  .btn {
+    @apply text-sm px-4 py-2;
+  }
+  
+  body::before,
+  body::after {
+    opacity: 0.3;
+  }
+}
+
+/* High DPI displays - sharper visuals */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .card,
+  .btn {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  body::before {
+    animation: none;
+  }
+  
+  .geometric-bg::before,
+  .geometric-bg::after {
+    animation: none;
+  }
+}

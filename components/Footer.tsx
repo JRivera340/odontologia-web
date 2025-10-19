@@ -1,25 +1,51 @@
+import Image from "next/image";
+
 export default function Footer(){
   return (
-    <footer className="border-t" style={{
-      background: 'rgba(15, 15, 15, 0.95)',
+    <footer className="border-t relative overflow-hidden" style={{
+      background: 'rgba(15, 15, 15, 0.98)',
       borderColor: 'rgba(102, 84, 52, 0.15)'
     }}>
-      <div className="container mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-3 gap-12 mb-12">
-          <div>
-            <h4 className="font-light text-lg mb-4 text-[var(--brand-yellow)]">Consultorio</h4>
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
+      
+      <div className="container mx-auto px-4 md:px-6 py-12 md:py-16 relative z-10">
+        {/* Logo section - mobile centered, desktop left */}
+        <div className="flex justify-center md:justify-start mb-8 md:mb-12">
+          <Image 
+            src="/images/logoBlanco.png" 
+            alt="Logo" 
+            width={160} 
+            height={50}
+            className="h-12 md:h-14 w-auto opacity-80"
+          />
+        </div>
+        
+        {/* Main content grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-8 md:mb-12">
+          {/* Location */}
+          <div className="text-center md:text-left">
+            <h4 className="font-light text-base md:text-lg mb-3 md:mb-4 text-[var(--brand-yellow)]">
+              Ubicación
+            </h4>
             <p className="text-gray-400 text-sm leading-relaxed">
               Cali, Valle del Cauca<br/>
-              Colombia<br/>
-              Lun–Vie: 8:00 - 18:00
+              Colombia
+            </p>
+            <p className="text-gray-500 text-xs mt-3">
+              Lun–Vie: 8:00 AM - 6:00 PM
             </p>
           </div>
-          <div>
-            <h4 className="font-light text-lg mb-4 text-[var(--brand-yellow)]">Contacto</h4>
+          
+          {/* Contact */}
+          <div className="text-center md:text-left">
+            <h4 className="font-light text-base md:text-lg mb-3 md:mb-4 text-[var(--brand-yellow)]">
+              Contacto
+            </h4>
             <div className="space-y-2 text-sm">
               <a 
                 href="mailto:riveragonzalezjoshua404@gmail.com" 
-                className="block text-gray-400 hover:text-[var(--brand-yellow)] transition-colors"
+                className="block text-gray-400 hover:text-[var(--brand-yellow)] transition-colors break-all"
               >
                 riveragonzalezjoshua404@gmail.com
               </a>
@@ -31,8 +57,12 @@ export default function Footer(){
               </a>
             </div>
           </div>
-          <div>
-            <h4 className="font-light text-lg mb-4 text-[var(--brand-yellow)]">Navegación</h4>
+          
+          {/* Navigation */}
+          <div className="text-center md:text-left">
+            <h4 className="font-light text-base md:text-lg mb-3 md:mb-4 text-[var(--brand-yellow)]">
+              Navegación
+            </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="/#servicios" className="text-gray-400 hover:text-[var(--brand-yellow)] transition-colors">
@@ -45,15 +75,18 @@ export default function Footer(){
                 </a>
               </li>
               <li>
-                <a href="/#sobre" className="text-gray-400 hover:text-[var(--brand-yellow)] transition-colors">
+                <a href="/#nosotros" className="text-gray-400 hover:text-[var(--brand-yellow)] transition-colors">
                   Nosotros
                 </a>
               </li>
             </ul>
           </div>
         </div>
-        <div className="text-center text-xs text-gray-500 pt-8 border-t" style={{borderColor: 'rgba(102, 84, 52, 0.15)'}}>
-          © {new Date().getFullYear()} Consultorio Odontológico • Diseño Minimalista
+        
+        {/* Copyright - enhanced for mobile */}
+        <div className="text-center text-xs text-gray-500 pt-6 md:pt-8 border-t" style={{borderColor: 'rgba(102, 84, 52, 0.15)'}}>
+          <p className="mb-1">© {new Date().getFullYear()} Consultorio Odontológico</p>
+          <p className="text-gray-600">Diseño Premium · Hecho con excelencia</p>
         </div>
       </div>
     </footer>
