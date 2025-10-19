@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function Footer(){
   return (
     <footer className="border-t relative overflow-hidden" style={{
@@ -10,16 +8,6 @@ export default function Footer(){
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
       
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-16 relative z-10">
-        {/* Logo section - mobile centered, desktop left */}
-        <div className="flex justify-center md:justify-start mb-8 md:mb-12">
-          <Image 
-            src="/images/logoBlanco.png" 
-            alt="Logo" 
-            width={160} 
-            height={50}
-            className="h-12 md:h-14 w-auto opacity-80"
-          />
-        </div>
         
         {/* Main content grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-8 md:mb-12">

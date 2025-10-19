@@ -19,6 +19,9 @@
 html { 
   scroll-behavior: smooth;
   background: #000000;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 body { 
@@ -30,9 +33,24 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
+  width: 100%;
+  max-width: 100vw;
 }
 
-.container { @apply max-w-7xl; }
+.container { 
+  @apply max-w-7xl; 
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Prevent horizontal overflow globally */
+* {
+  max-width: 100%;
+}
+
+section, main, div {
+  box-sizing: border-box;
+}
 
 /* Elegant light rays - conic gradient */
 body::before {
@@ -401,6 +419,7 @@ body::after {
 /* Decorative geometric elements */
 .geometric-bg {
   position: relative;
+  overflow: hidden;
 }
 
 .geometric-bg::before {
@@ -413,6 +432,7 @@ body::after {
   border: 1px solid rgba(247, 185, 41, 0.06);
   transform: rotate(45deg);
   animation: float-square 20s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .geometric-bg::after {
@@ -425,6 +445,7 @@ body::after {
   border: 1px solid rgba(102, 84, 52, 0.05);
   border-radius: 50%;
   animation: pulse-ring 12s ease-in-out infinite;
+  pointer-events: none;
 }
 
 @keyframes float-square {
