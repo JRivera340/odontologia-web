@@ -858,30 +858,32 @@ body::after {
 /* Landing page services grid fix */
 .services-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
 
 @media (min-width: 768px) {
   .services-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
   }
 }
 
 /* Enhanced button proportions for landing page */
 .btn-landing {
-  @apply px-6 py-3 text-sm font-medium rounded-lg transition-all duration-300;
-  min-height: 48px;
+  @apply px-4 py-2 text-xs font-medium rounded-lg transition-all duration-300;
+  min-height: 40px;
 }
 
 .btn-landing:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 @media (min-width: 768px) {
   .btn-landing {
-    @apply px-8 py-4 text-base;
-    min-height: 52px;
+    @apply px-5 py-2.5 text-sm;
+    min-height: 44px;
   }
 }
