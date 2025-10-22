@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import WhatsAppButton from "./ui/WhatsAppButton";
+import { MessageCircle } from "lucide-react";
 
 interface Service {
   id: number;
@@ -53,11 +54,16 @@ export default function ServiceCardCompact({ service }: { service: Service }) {
           >
             Ver más
           </Link>
-          <WhatsAppButton 
-            className="btn-compact-wa" 
-            message={message}
-            label=""
-          />
+          <a 
+            href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "+573113440504").replace(/\D/g,"")}?text=${encodeURIComponent(message)}`}
+            target="_blank" 
+            rel="noreferrer"
+            className="btn-compact-wa"
+            aria-label="Contactar por WhatsApp"
+          >
+            <MessageCircle size={12} />
+            <span className="text-[8px] font-bold">WA</span>
+          </a>
         </div>
       </div>
     </article>
