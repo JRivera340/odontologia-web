@@ -35,6 +35,13 @@ body {
   position: relative;
   width: 100%;
   max-width: 100vw;
+  padding-top: 80px; /* Space for fixed header */
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-top: 90px; /* Slightly more space on desktop */
+  }
 }
 
 .container { 

@@ -1,49 +1,16 @@
 import Link from "next/link";
 import WhatsAppButton from "./ui/WhatsAppButton";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Header(){
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  
-  // Effect to handle header visibility on scroll (mobile only)
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Only apply this behavior on mobile (screen width < 768px)
-      if (window.innerWidth < 768) {
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-          // Scrolling down and past 100px - hide header
-          setIsHeaderVisible(false);
-        } else {
-          // Scrolling up - show header
-          setIsHeaderVisible(true);
-        }
-      } else {
-        // On desktop, always show header
-        setIsHeaderVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
   
   return (
-    <header 
-      className={`sticky top-0 z-50 border-b transition-transform duration-300 ease-in-out ${
-        isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
-      }`} 
-      style={{
-        background: 'rgba(15, 15, 15, 0.98)',
-        borderColor: 'rgba(102, 84, 52, 0.15)',
-        backdropFilter: 'blur(20px)'
-      }}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 border-b" style={{
+      background: 'rgba(15, 15, 15, 0.98)',
+      borderColor: 'rgba(102, 84, 52, 0.15)',
+      backdropFilter: 'blur(20px)'
+    }}>
       <div className="container mx-auto px-4 md:px-6 py-4 md:py-5 flex items-center justify-between">
         {/* Logo Text */}
         <Link href="/" className="text-lg md:text-xl font-light tracking-wider hover:opacity-80 transition-opacity">
