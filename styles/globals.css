@@ -799,21 +799,23 @@ body::after {
 
 .btn-compact-wa {
   @apply inline-flex items-center justify-center w-8 h-6 rounded;
-  background: #25D366;
-  border: 1px solid #25D366;
+  background: linear-gradient(135deg, var(--brand-yellow) 0%, var(--brand-brown) 100%);
+  border: 1px solid var(--brand-yellow);
   transition: all 0.3s ease;
+  color: #000;
 }
 
 .btn-compact-wa:hover {
-  background: #20BA5A;
-  border-color: #20BA5A;
+  background: linear-gradient(135deg, var(--brand-brown) 0%, var(--brand-yellow) 100%);
+  border-color: var(--brand-brown);
   transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(247, 185, 41, 0.3);
 }
 
 .btn-compact-wa svg {
   width: 12px;
   height: 12px;
-  fill: white;
+  fill: #000;
 }
 
 /* Masonry-style staggered animation */
