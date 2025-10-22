@@ -58,7 +58,7 @@ export default function ServiceCardCompact({ service }: { service: Service }) {
             href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "+573113440504").replace(/\D/g,"")}?text=${encodeURIComponent(message)}`}
             target="_blank" 
             rel="noreferrer"
-            className="btn-compact-wa"
+            className="btn-compact-wa flex-1"
             aria-label="Contactar por WhatsApp"
           >
             <MessageCircle size={12} />

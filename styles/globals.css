@@ -798,12 +798,13 @@ body::after {
 }
 
 .btn-compact-wa {
-  @apply inline-flex items-center justify-center w-10 h-6 rounded text-xs font-medium;
+  @apply inline-flex items-center justify-center px-2 py-1.5 rounded text-[10px] font-medium;
   background: linear-gradient(135deg, var(--brand-yellow) 0%, var(--brand-brown) 100%);
   border: 1px solid var(--brand-yellow);
   transition: all 0.3s ease;
   color: #000;
   position: relative;
+  white-space: nowrap;
 }
 
 .btn-compact-wa:hover {
