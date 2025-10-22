@@ -17,7 +17,7 @@ export default function ServiceCardCompact({ service }: { service: Service }) {
   const message = `Hola, me interesa información sobre: ${service.title} (${service.durationMin} min)`;
   
   return (
-    <article className="service-card-compact group">
+    <article className="service-card-compact group flex flex-col h-full">
       {/* Image Section */}
       <Link href={`/servicios/${service.slug}`} className="block relative h-24 overflow-hidden rounded-t-lg">
         <Image
@@ -35,19 +35,19 @@ export default function ServiceCardCompact({ service }: { service: Service }) {
       </Link>
 
       {/* Content Section */}
-      <div className="p-3">
+      <div className="p-3 flex flex-col flex-grow">
         <Link href={`/servicios/${service.slug}`}>
           <h3 className="text-sm font-light text-white mb-1.5 line-clamp-2 hover:text-[var(--brand-yellow)] transition-colors">
             {service.title}
           </h3>
         </Link>
         
-        <p className="text-[10px] text-gray-400 mb-2 line-clamp-2 leading-relaxed">
+        <p className="text-[10px] text-gray-400 mb-2 line-clamp-2 leading-relaxed flex-grow">
           {service.shortDesc}
         </p>
 
-        {/* Action Buttons */}
-        <div className="flex gap-1.5">
+        {/* Action Buttons - Fixed at bottom */}
+        <div className="flex gap-1.5 mt-auto">
           <Link 
             href={`/servicios/${service.slug}`}
             className="btn-compact-detail flex-1"
