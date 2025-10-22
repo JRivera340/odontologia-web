@@ -39,65 +39,46 @@ export default function Header(){
         </button>
       </div>
       
-      {/* Mobile Menu - Fixed full screen */}
+      {/* Mobile Menu - Simple dropdown */}
       {menuOpen && (
-        <div className="md:hidden fixed inset-0 z-40">
-          {/* Ultra opaque background */}
-          <div className="absolute inset-0 bg-black"></div>
-          <div className="absolute inset-0 bg-gradient-to-br from-black/95 to-gray-900/95"></div>
-          
-          <nav className="relative flex flex-col items-center justify-center h-full gap-6 px-6">
-            {/* Main Pages */}
-            <div className="text-center">
-              <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">Páginas</p>
-              <div className="flex flex-col gap-4">
-                <Link 
-                  href="/" 
-                  className="text-lg font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Inicio
-                </Link>
-                <Link 
-                  href="/servicios" 
-                  className="text-lg font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Catálogo Completo
-                </Link>
-              </div>
-            </div>
-
-            {/* Landing Sections */}
-            <div className="text-center border-t border-gray-800 pt-6 w-full max-w-xs">
-              <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">Navegar</p>
-              <div className="flex flex-col gap-4">
-                <Link 
-                  href="/#servicios" 
-                  className="text-lg font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Servicios Destacados
-                </Link>
-                <Link 
-                  href="/#nosotros" 
-                  className="text-lg font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Quiénes Somos
-                </Link>
-                <Link 
-                  href="/#agendar" 
-                  className="text-lg font-light text-white hover:text-[var(--brand-yellow)] transition-colors"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Agendar Cita
-                </Link>
-              </div>
-            </div>
-
-            {/* CTA */}
-            <div className="pt-4 w-full max-w-xs px-6 border-t border-gray-800">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-black border-t border-gray-800">
+          <nav className="flex flex-col gap-4 p-6">
+            <Link 
+              href="/" 
+              className="text-white hover:text-[var(--brand-yellow)] transition-colors py-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              Inicio
+            </Link>
+            <Link 
+              href="/servicios" 
+              className="text-white hover:text-[var(--brand-yellow)] transition-colors py-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              Catálogo Completo
+            </Link>
+            <Link 
+              href="/#servicios" 
+              className="text-white hover:text-[var(--brand-yellow)] transition-colors py-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              Servicios Destacados
+            </Link>
+            <Link 
+              href="/#nosotros" 
+              className="text-white hover:text-[var(--brand-yellow)] transition-colors py-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              Quiénes Somos
+            </Link>
+            <Link 
+              href="/#agendar" 
+              className="text-white hover:text-[var(--brand-yellow)] transition-colors py-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              Agendar Cita
+            </Link>
+            <div className="pt-4 border-t border-gray-800">
               <WhatsAppButton 
                 className="btn btn-primary w-full text-sm py-3" 
                 label="Agendar por WhatsApp" 
