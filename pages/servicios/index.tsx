@@ -25,8 +25,8 @@ export default function ServicesPage({ services }: { services: any[] }) {
           
           {services.length > 0 ? (
             <>
-              {/* Mobile: Compact Grid (3 columns) */}
-              <div className="grid grid-cols-3 gap-3 md:hidden">
+              {/* Mobile: Compact Grid (2 columns) */}
+              <div className="grid grid-cols-2 gap-4 md:hidden">
                 {services.map((s) => (
                   <ServiceCardCompact key={s.id} service={s} />
                 ))}

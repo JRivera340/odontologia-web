@@ -13,7 +13,7 @@ interface Service {
 }
 
 export default function ServiceCardCompact({ service }: { service: Service }) {
-  const message = `Hola, me interesa información sobre: ${service.title} (${service.durationMin} min • $${service.price.toLocaleString("es-CO")})`;
+  const message = `Hola, me interesa información sobre: ${service.title} (${service.durationMin} min)`;
   
   return (
     <article className="service-card-compact group">
@@ -44,13 +44,6 @@ export default function ServiceCardCompact({ service }: { service: Service }) {
         <p className="text-[10px] text-gray-400 mb-2 line-clamp-2 leading-relaxed">
           {service.shortDesc}
         </p>
-
-        {/* Price */}
-        <div className="mb-2">
-          <span className="text-[var(--brand-yellow)] font-medium text-xs">
-            ${service.price.toLocaleString("es-CO")}
-          </span>
-        </div>
 
         {/* Action Buttons */}
         <div className="flex gap-1.5">
